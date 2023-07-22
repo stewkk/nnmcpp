@@ -1,7 +1,7 @@
 [![MacOS](https://github.com/stewkk/nnmcpp/actions/workflows/macos.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/macos.yml)
-[![Windows](https://github.com/stewkk/nnmcpp/actions/workflows/windows.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/windows.yml)[![Actions Status](https://github.com/stewkk/nmmcpp/workflows/Ubuntu/badge.svg)](https://github.com/TheLartians/ModernCppStarter/actions)
+[![Windows](https://github.com/stewkk/nnmcpp/actions/workflows/windows.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/windows.yml)
 [![Ubuntu](https://github.com/stewkk/nnmcpp/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/ubuntu.yml)
-[![Style](https://github.com/stewkk/nnmcpp/actions/workflows/style.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/style.yml)[![Actions Status](https://github.com/stewkk/nmmcpp/workflows/Install/badge.svg)](https://github.com/TheLartians/ModernCppStarter/actions)
+[![Style](https://github.com/stewkk/nnmcpp/actions/workflows/style.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/style.yml)
 [![Install](https://github.com/stewkk/nnmcpp/actions/workflows/install.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/install.yml)
 [![codecov](https://codecov.io/gh/stewkk/nmmcpp/branch/master/graph/badge.svg)](https://codecov.io/gh/stewkk/nnmcpp)
 
