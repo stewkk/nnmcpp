@@ -3,7 +3,7 @@
 [![Ubuntu](https://github.com/stewkk/nnmcpp/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/ubuntu.yml)
 [![Style](https://github.com/stewkk/nnmcpp/actions/workflows/style.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/style.yml)
 [![Install](https://github.com/stewkk/nnmcpp/actions/workflows/install.yml/badge.svg)](https://github.com/stewkk/nnmcpp/actions/workflows/install.yml)
-[![codecov](https://codecov.io/gh/stewkk/nmmcpp/branch/master/graph/badge.svg)](https://codecov.io/gh/stewkk/nnmcpp)
+[![codecov](https://codecov.io/gh/stewkk/nnmcpp/branch/master/graph/badge.svg?token=0APZJY8Q3J)](https://codecov.io/gh/stewkk/nnmcpp)
 
 # Nnmcpp
 
