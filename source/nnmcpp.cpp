@@ -1,11 +1,12 @@
 #include <fmt/format.h>
-#include <greeter/greeter.h>
 
-using namespace greeter;
+#include <nnmcpp/nnmcpp.hpp>
 
-Greeter::Greeter(std::string _name) : name(std::move(_name)) {}
+using namespace nnmcpp;
 
-std::string Greeter::greet(LanguageCode lang) const {
+Nnmcpp::Nnmcpp(std::string _name) : name(std::move(_name)) {}
+
+std::string Nnmcpp::greet(LanguageCode lang) const {
   switch (lang) {
     default:
     case LanguageCode::EN:
