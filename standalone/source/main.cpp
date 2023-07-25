@@ -7,13 +7,6 @@
 #include <unordered_map>
 
 auto main(int argc, char** argv) -> int {
-  const std::unordered_map<std::string, nnmcpp::LanguageCode> languages{
-      {"en", nnmcpp::LanguageCode::EN},
-      {"de", nnmcpp::LanguageCode::DE},
-      {"es", nnmcpp::LanguageCode::ES},
-      {"fr", nnmcpp::LanguageCode::FR},
-  };
-
   cxxopts::Options options(*argv, "A program to welcome the world!");
 
   std::string language;
@@ -39,15 +32,6 @@ auto main(int argc, char** argv) -> int {
     std::cout << "Nnmcpp, version " << NNMCPP_VERSION << std::endl;
     return 0;
   }
-
-  auto langIt = languages.find(language);
-  if (langIt == languages.end()) {
-    std::cerr << "unknown language code: " << language << std::endl;
-    return 1;
-  }
-
-  nnmcpp::Nnmcpp nnmcpp(name);
-  std::cout << nnmcpp.greet(langIt->second) << std::endl;
 
   return 0;
 }
