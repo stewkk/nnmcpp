@@ -28,6 +28,6 @@ add_executable(${PROJECT_NAME} ${headers} ${sources})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/source)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17 OUTPUT_NAME "Nnmcpp")
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20 OUTPUT_NAME "Nnmcpp")
 
 target_link_libraries(${PROJECT_NAME} Nnmcpp::Nnmcpp cxxopts)
