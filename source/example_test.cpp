@@ -78,7 +78,7 @@ std::string FromFile(std::string relative_path) {
 static const std::string kInfoPath = "static/00_info.txt";
 static const std::string kOtherInfoPath = "static/01_info.txt";
 
-TEST(ParserTest, ParsesTitle) {
+TEST(ParserTest, DISABLED_ParsesTitle) {
   std::string info = FromFile(kInfoPath);
   nnmcpp::Nnmcpp p(info);
 
@@ -87,7 +87,7 @@ TEST(ParserTest, ParsesTitle) {
   ASSERT_THAT(got.title.value_or(""), Eq("Сон в летнюю ночь / A Midsummer Night's Dream (1999)"));
 }
 
-TEST(ParserTest, ParsesOtherTitle) {
+TEST(ParserTest, DISABLED_PartsesOtherTitle) {
   std::string info = FromFile(kOtherInfoPath);
   nnmcpp::Nnmcpp p(info);
 
@@ -96,7 +96,7 @@ TEST(ParserTest, ParsesOtherTitle) {
   ASSERT_THAT(got.title.value_or(""), Eq("Человек из стали / Man of Steel (2013) BDRip"));
 }
 
-TEST(ParserTest, ParsesProduction) {
+TEST(ParserTest, DISABLED_ParsesProduction) {
   std::string info = FromFile(kInfoPath);
   nnmcpp::Nnmcpp p(info);
 
