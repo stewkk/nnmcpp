@@ -45,7 +45,7 @@ auto main(int argc, char** argv) -> int {
     return 0;
   }
 
-  throw std::runtime_error("FIXME: parsing is not yet implemented");
+  std::cerr << "FIXME: parsing is not yet implemented";
 
   return 0;
 }
