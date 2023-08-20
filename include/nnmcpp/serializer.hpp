@@ -5,11 +5,11 @@
 
 namespace nnmcpp {
 
-struct Info {
+  struct Info {
     std::string title;
-    std::optional<std::string> production;
-};
+    std::optional<std::string> translation;
+  };
 
-std::string Serialize(const Info& info);
+  std::string Serialize(const Info& info);
 
-} // namespace nnmcpp
+}  // namespace nnmcpp

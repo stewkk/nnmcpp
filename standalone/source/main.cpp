@@ -2,11 +2,11 @@
 
 #include <cxxopts.hpp>
 #include <fs_finder.hpp>
+#include <fstream>
 #include <iostream>
+#include <nnmcpp/serializer.hpp>
 #include <string>
 #include <unordered_map>
-
-#include <nnmcpp/serializer.hpp>
 
 using nnmcpp::standalone::FindInfoFiles;
 
@@ -48,8 +48,15 @@ auto main(int argc, char** argv) -> int {
   }
 
   std::cerr << "FIXME: parsing is not yet implemented";
+  for (auto info_file_path : paths) {
+    std::ifstream f(info_file_path);
+    std::stringstream buf;
+    buf << f.rdbuf();
+    // NOTE: get file contents with buf.str()
 
-  std::cout << nnmcpp::Serialize(nnmcpp::Info{"test", "production"});
+    const auto info = nnmcpp::Info{"test", "translation"};  // TODO: call parser here
+    std::cout << nnmcpp::Serialize(info) << '\n';
+  }
 
   return 0;
 }
