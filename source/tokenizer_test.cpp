@@ -7,6 +7,7 @@
 #include <sstream>
 #include <fstream>
 
+#include "keys.hpp"
 #include "tokenizer.hpp"
 
 using namespace nnmcpp::parsing;
@@ -126,7 +127,9 @@ TokenStream Tokenizer::Tokenize(std::istream& in) {
     LexemStream lexem_stream = Lexer().Tokenize(in);
 
     for (Lexem lexem = lexem_stream.Read(); lexem.type != LexemType::EMPTY; lexem = lexem_stream.Read()) {
+        std::cout << kTokenizerStateNaming.find(state)->second << " -> ";
         transit(lexem);
+        std::cout << kTokenizerStateNaming.find(state)->second << std::endl;
     }
 
     return stream;
@@ -193,8 +196,8 @@ void Tokenizer::transit(Lexem lex) {
                     return;
                 case LexemType::COLON:
                     state = TokenizerState::LT;
-                    if (kKeys.find(key.value) != kKeys.end()) {
-                        stream.Put(key);
+                    if (kNormalizedKeys.find(key.value) != kNormalizedKeys.end()) {
+                        stream.Put(Token(TokenType::KEY, kNormalizedKeys.find(key.value)->second));
                         key.value.clear();
                         return;
                     }
@@ -252,11 +255,11 @@ void Tokenizer::transit(Lexem lex) {
                     text.value += lex.value;
                     return;
                 case LexemType::COLON:
-                    if (kKeys.find(key.value) != kKeys.end()) {
+                    if (kNormalizedKeys.find(key.value) != kNormalizedKeys.end()) {
                         state = TokenizerState::LT;
                         stream.Put(text);
                         text.value.clear();
-                        stream.Put(key);
+                        stream.Put(Token(TokenType::KEY, kNormalizedKeys.find(key.value)->second));
                         key.value.clear();
                         return;
                     }
@@ -446,41 +449,41 @@ TEST(TokenizerTest, SimpleTokenize) {
     TokenStream expected_stream({
         Token(TokenType::TITLE, "Сон в летнюю ночь / A Midsummer Night's Dream (1999)"),
         Token(TokenType::TEXT, "pic"),
-        Token(TokenType::KEY, "Производство"),
+        Token(TokenType::KEY, "country"),
         Token(TokenType::TEXT, " Италия, Великобритания, США (Fox Searchlight Pictures, Regency Enterprises, Taurus Film)"),
-        Token(TokenType::KEY, "Жанр"),
+        Token(TokenType::KEY, "genre"),
         Token(TokenType::TEXT, " комедия, фэнтези"),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Режиссер"),
+        Token(TokenType::KEY, "director"),
         Token(TokenType::TEXT, " Майкл Хоффман"),
-        Token(TokenType::KEY, "Актеры"),
+        Token(TokenType::KEY, "actor"),
         Token(TokenType::TEXT, " Софи Марсо, Кевин Клайн, Мишель Пфайффер, Стэнли Туччи, Руперт Эверетт, Калиста Флокхарт, Доминик Уэст, Кристиан Бэйл, Анна Фрил, Дэвид Стрэтэйрн, Роджер Рис, Сэм Рокуэлл, Грегори Джбара, Билл Ирвин, Макс Райт и др."),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Описание"),
+        Token(TokenType::KEY, "description"),
         Token(TokenType::TEXT, " По мотивам одноимённой пьесы Шекспира.В чувственном и прекрасном мире низких холмов и бесподобных кулинарных кушаний персонажи Шекспира получают новое право на жизнь, исследуя свой мир на новомодном изобретении — велосипеде. Пролетая по лесным дорогам на двух колёсах, дворяне, любовники и актёры Тосканы оказываются во власти озорных духов, которые правят миром…"),
         Token(TokenType::TEXT, "pic6.4/1025,731"),
-        Token(TokenType::KEY, "Рейтинг MPAA"),
+        Token(TokenType::KEY, "mpaa"),
         Token(TokenType::TEXT, " G (нет возрастных ограничений)"),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Продолжительность"),
+        Token(TokenType::KEY, "duration"),
         Token(TokenType::TEXT, " 01:55:37"),
-        Token(TokenType::KEY, "Качество видео"),
+        Token(TokenType::KEY, "quality"),
         Token(TokenType::TEXT, " DVDRemux"),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Видео"),
+        Token(TokenType::KEY, "video"),
         Token(TokenType::TEXT, " MPEG-2, 720x576@1024x576, ~5500 Kbps"),
-        Token(TokenType::KEY, "Аудио #1"),
+        Token(TokenType::KEY, "audio"),
         Token(TokenType::TEXT, " AC3, 6 ch, 384 Kbps, английский"),
-        Token(TokenType::KEY, "Аудио #2"),
+        Token(TokenType::KEY, "audio"),
         Token(TokenType::TEXT, " AC3, 6 ch, 384 Kbps, французский"),
-        Token(TokenType::KEY, "Аудио #3"),
+        Token(TokenType::KEY, "audio"),
         Token(TokenType::TEXT, " AC3, 6 ch, 384 Kbps, английский"),
-        Token(TokenType::KEY, "Аудио #4"),
+        Token(TokenType::KEY, "audio"),
         Token(TokenType::TEXT, " AC3, 6 ch, 384 Kbps, испанский"),
-        Token(TokenType::KEY, "Аудио #5"),
+        Token(TokenType::KEY, "audio"),
         Token(TokenType::TEXT, " AC3, 2 ch, 192 Kbps, русский"),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Субтитры"),
+        Token(TokenType::KEY, "subtitles"),
         Token(TokenType::TEXT, " английский, французский, испанский, немецкий")
     });
 
@@ -502,38 +505,38 @@ TEST(TokenizerTest, OtherSimpleTokenize) {
     TokenStream expected_stream({
         Token(TokenType::TITLE, "Человек из стали / Man of Steel (2013) BDRip"),
         Token(TokenType::TEXT, "pic"),
-        Token(TokenType::KEY, "Производство"),
+        Token(TokenType::KEY, "country"),
         Token(TokenType::TEXT, " США, Канада, Великобритания / Warner Bros. Pictures"),
-        Token(TokenType::KEY, "Жанр"),
+        Token(TokenType::KEY, "genre"),
         Token(TokenType::TEXT, " фантастика, боевик, приключения"),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Режиссер"),
+        Token(TokenType::KEY, "director"),
         Token(TokenType::TEXT, " Зак Снайдер"),
-        Token(TokenType::KEY, "Актеры"),
+        Token(TokenType::KEY, "actor"),
         Token(TokenType::TEXT, " Генри Кавилл, Эми Адамс, Майкл Шеннон (II), Кевин Костнер, Дайан Лэйн, Лоуренс Фишборн, Антье Трауэ, Айелет Зурер, Расселл Кроу, Гарри Дж. Ленникс"),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Описание"),
+        Token(TokenType::KEY, "description"),
         Token(TokenType::TEXT, "Кларк Кент (Кал-Эл) - молодой человек, который чувствует себя чужаком из-за своей невероятной силы. Много лет назад он был отправлен на Землю с развитой планеты Криптон, и теперь задается вопросом: зачем?Воспитанный приемными родителями Мартой и Джонатаном Кентами, Кларк знает: обладать сверхспособностями - значит принимать сложные решения. Но когда человечество более всего нуждается в стабильности, оно подвергается нападению. Сможет ли герой восстановить мир или воспользуется своей силой для того, чтобы окончательно его разрушить?"),
         Token(TokenType::TEXT, "pic7.1/10753,350"),
-        Token(TokenType::KEY, "Возраст"),
+        Token(TokenType::KEY, "age"),
         Token(TokenType::TEXT, " 12+ (зрителям, достигшим 12 лет)"),
-        Token(TokenType::KEY, "Рейтинг MPAA"),
+        Token(TokenType::KEY, "mpaa"),
         Token(TokenType::TEXT, " PG-13 (детям до 13 лет просмотр нежелателен)"),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Продолжительность"),
+        Token(TokenType::KEY, "duration"),
         Token(TokenType::TEXT, " 02:23:13"),
-        Token(TokenType::KEY, "Качество видео"),
+        Token(TokenType::KEY, "quality"),
         Token(TokenType::TEXT, " BDRip"),
-        Token(TokenType::KEY, "Перевод"),
+        Token(TokenType::KEY, "translation"),
         Token(TokenType::TEXT, " Дублированный (BD CEE)"),
-        Token(TokenType::KEY, "Субтитры"),
+        Token(TokenType::KEY, "subtitles"),
         Token(TokenType::TEXT, " Английские"),
         Token(TokenType::TEXT, ""),
-        Token(TokenType::KEY, "Видео"),
+        Token(TokenType::KEY, "video"),
         Token(TokenType::TEXT, " AVC/H.264, 1024x426, ~2800 Kbps"),
-        Token(TokenType::KEY, "Аудио #1"),
+        Token(TokenType::KEY, "audio"),
         Token(TokenType::TEXT, " AC3, 6 ch, 448 Kbps - Русский"),
-        Token(TokenType::KEY, "Аудио #2"),
+        Token(TokenType::KEY, "audio"),
         Token(TokenType::TEXT, " AC3, 6 ch, 448 Kbps - Английский"),
     });
 
