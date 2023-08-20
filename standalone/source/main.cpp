@@ -6,6 +6,8 @@
 #include <string>
 #include <unordered_map>
 
+#include <nnmcpp/serializer.hpp>
+
 using nnmcpp::standalone::FindInfoFiles;
 
 auto main(int argc, char** argv) -> int {
@@ -46,6 +48,8 @@ auto main(int argc, char** argv) -> int {
   }
 
   std::cerr << "FIXME: parsing is not yet implemented";
+
+  std::cout << nnmcpp::Serialize(nnmcpp::Info{"test", "production"});
 
   return 0;
 }
