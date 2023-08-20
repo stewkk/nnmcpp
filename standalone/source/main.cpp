@@ -1,10 +1,14 @@
 #include <nnmcpp/version.h>
 
-#include <cxxopts.hpp>
 #include <iostream>
-#include <nnmcpp/nnmcpp.hpp>
 #include <string>
 #include <unordered_map>
+
+#include <cxxopts.hpp>
+
+#include <fs_finder.hpp>
+
+using nnmcpp::standalone::FindInfoFiles;
 
 auto main(int argc, char** argv) -> int {
   cxxopts::Options options(*argv, ".info file parser");
@@ -15,6 +19,7 @@ auto main(int argc, char** argv) -> int {
   options.add_options()
     ("h,help", "Show help")
     ("v,version", "Print the current version number")
+    ("d,dry", "Only print paths to .info files")
     ("path", "Path to search .info files", cxxopts::value(path)->default_value("."))
   ;
   // clang-format on
@@ -33,7 +38,16 @@ auto main(int argc, char** argv) -> int {
     return 0;
   }
 
-  std::cout << path << std::endl;
+  const auto paths = nnmcpp::standalone::FindInfoFiles(path);
+
+  if (result["dry"].as<bool>()) {
+    for (auto info_file_path : paths) {
+      std::cout << info_file_path << '\n';
+    }
+    return 0;
+  }
+
+  throw std::runtime_error("FIXME: parsing is not yet implemented");
 
   return 0;
 }
