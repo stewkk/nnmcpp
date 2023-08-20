@@ -1,3 +1,4 @@
+#include <fmt/format.h>
 #include <nnmcpp/version.h>
 
 #include <cxxopts.hpp>
@@ -49,10 +50,14 @@ auto main(int argc, char** argv) -> int {
 
   std::cerr << "FIXME: parsing is not yet implemented";
   for (auto info_file_path : paths) {
-    std::ifstream f(info_file_path);
-    std::stringstream buf;
-    buf << f.rdbuf();
-    // NOTE: get file contents with buf.str()
+    try {
+      std::ifstream f(info_file_path);
+      std::stringstream buf;
+      buf << f.rdbuf();
+      // NOTE: get file contents with buf.str()
+    } catch (const std::exception& e) {
+      std::cerr << fmt::format("unhandled exception at reading {}: {}\n", info_file_path, e.what());
+    }
 
     const auto info = nnmcpp::Info{"test", "translation"};  // TODO: call parser here
     std::cout << nnmcpp::Serialize(info) << '\n';
