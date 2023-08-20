@@ -1,12 +1,10 @@
 #include <nnmcpp/version.h>
 
+#include <cxxopts.hpp>
+#include <fs_finder.hpp>
 #include <iostream>
 #include <string>
 #include <unordered_map>
-
-#include <cxxopts.hpp>
-
-#include <fs_finder.hpp>
 
 using nnmcpp::standalone::FindInfoFiles;
 
