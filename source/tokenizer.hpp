@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "keys.hpp"
+
 namespace nnmcpp {
 namespace parsing {
 
@@ -68,26 +70,6 @@ struct Token {
 
     TokenType type;
     std::string value;
-};
-
-static const std::unordered_set<std::string> kKeys = {
-    "Производство",
-    "Жанр",
-    "Режиссер",
-    "Актеры",
-    "Описание",
-    "Рейтинг MPAA",
-    "Продолжительность",
-    "Качество видео",
-    "Видео",
-    "Аудио #1",
-    "Аудио #2",
-    "Аудио #3",
-    "Аудио #4",
-    "Аудио #5",
-    "Субтитры",
-    "Возраст",
-    "Перевод"
 };
 
 template <typename T>
