@@ -1,32 +1,28 @@
 #include <nnmcpp/version.h>
 
 #include <cxxopts.hpp>
+#include <fs_finder.hpp>
 #include <iostream>
-#include <nnmcpp/nnmcpp.hpp>
 #include <string>
 #include <unordered_map>
 
+using nnmcpp::standalone::FindInfoFiles;
+
 auto main(int argc, char** argv) -> int {
-  const std::unordered_map<std::string, nnmcpp::LanguageCode> languages{
-      {"en", nnmcpp::LanguageCode::EN},
-      {"de", nnmcpp::LanguageCode::DE},
-      {"es", nnmcpp::LanguageCode::ES},
-      {"fr", nnmcpp::LanguageCode::FR},
-  };
+  cxxopts::Options options(*argv, ".info file parser");
 
-  cxxopts::Options options(*argv, "A program to welcome the world!");
-
-  std::string language;
-  std::string name;
+  std::string path;
 
   // clang-format off
   options.add_options()
     ("h,help", "Show help")
     ("v,version", "Print the current version number")
-    ("n,name", "Name to greet", cxxopts::value(name)->default_value("World"))
-    ("l,lang", "Language code to use", cxxopts::value(language)->default_value("en"))
+    ("d,dry", "Only print paths to .info files")
+    ("path", "Path to search .info files", cxxopts::value(path)->default_value("."))
   ;
   // clang-format on
+
+  options.parse_positional({"path"});
 
   auto result = options.parse(argc, argv);
 
@@ -40,14 +36,16 @@ auto main(int argc, char** argv) -> int {
     return 0;
   }
 
-  auto langIt = languages.find(language);
-  if (langIt == languages.end()) {
-    std::cerr << "unknown language code: " << language << std::endl;
-    return 1;
+  const auto paths = nnmcpp::standalone::FindInfoFiles(path);
+
+  if (result["dry"].as<bool>()) {
+    for (auto info_file_path : paths) {
+      std::cout << info_file_path << '\n';
+    }
+    return 0;
   }
 
-  nnmcpp::Nnmcpp nnmcpp(name);
-  std::cout << nnmcpp.greet(langIt->second) << std::endl;
+  std::cerr << "FIXME: parsing is not yet implemented";
 
   return 0;
 }
