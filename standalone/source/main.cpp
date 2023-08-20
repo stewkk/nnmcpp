@@ -7,26 +7,19 @@
 #include <unordered_map>
 
 auto main(int argc, char** argv) -> int {
-  const std::unordered_map<std::string, nnmcpp::LanguageCode> languages{
-      {"en", nnmcpp::LanguageCode::EN},
-      {"de", nnmcpp::LanguageCode::DE},
-      {"es", nnmcpp::LanguageCode::ES},
-      {"fr", nnmcpp::LanguageCode::FR},
-  };
+  cxxopts::Options options(*argv, ".info file parser");
 
-  cxxopts::Options options(*argv, "A program to welcome the world!");
-
-  std::string language;
-  std::string name;
+  std::string path;
 
   // clang-format off
   options.add_options()
     ("h,help", "Show help")
     ("v,version", "Print the current version number")
-    ("n,name", "Name to greet", cxxopts::value(name)->default_value("World"))
-    ("l,lang", "Language code to use", cxxopts::value(language)->default_value("en"))
+    ("path", "Path to search .info files", cxxopts::value(path)->default_value("."))
   ;
   // clang-format on
+
+  options.parse_positional({"path"});
 
   auto result = options.parse(argc, argv);
 
@@ -40,14 +33,7 @@ auto main(int argc, char** argv) -> int {
     return 0;
   }
 
-  auto langIt = languages.find(language);
-  if (langIt == languages.end()) {
-    std::cerr << "unknown language code: " << language << std::endl;
-    return 1;
-  }
-
-  nnmcpp::Nnmcpp nnmcpp(name);
-  std::cout << nnmcpp.greet(langIt->second) << std::endl;
+  std::cout << path << std::endl;
 
   return 0;
 }
