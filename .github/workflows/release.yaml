@@ -57,12 +57,12 @@ jobs:
         run: cmake --build build -j4
 
       - name: run
-        run: ./build/Nnmcpp
+        run: .\build\Debug\Nnmcpp.exe
 
       - uses: actions/upload-artifact@v3
         with:
           name: nnmcpp-windows
-          path: ./build/Nnmcpp
+          path: .\build\Debug\Nnmcpp.exe
 
   build-macos:
     runs-on: macos-latest
@@ -86,5 +86,5 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: nnmcpp-windows
+          name: nnmcpp-macos
           path: ./build/Nnmcpp
