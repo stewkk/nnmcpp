@@ -28,8 +28,8 @@ Usage:
 
 ### Download binary release
 
-| [Windows]() | [MacOS]() | [Linux]() |
-|-------------|-----------|-----------|
+| [Windows](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-windows.zip) | [MacOS](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-macos.zip) | [Linux](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-macos.zip) |
+|-----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
 
 ### Build and run the standalone target
 
