@@ -26,10 +26,8 @@ Usage:
   -d, --dry      Only print paths to .info files
 ```
 
-### Download binary release
-
-| [Windows](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-windows.zip) | [MacOS](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-macos.zip) | [Linux](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-macos.zip) |
-|-----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+### Download binary release for Windows
+ [nnmcpp-windows.zip](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-windows.zip)
 
 ### Build and run the standalone target
 
