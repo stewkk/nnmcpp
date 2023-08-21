@@ -1,0 +1,90 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+env:
+  CPM_SOURCE_CACHE: ${{ github.workspace }}/cpm_modules
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: "**/cpm_modules"
+          key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
+
+      - name: configure
+        run: cmake -Sstandalone -Bbuild -DCMAKE_BUILD_TYPE=Release
+
+      - name: build
+        run: cmake --build build -j4
+
+      - name: run
+        run: ./build/Nnmcpp
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nnmcpp-ubuntu
+          path: ./build/Nnmcpp
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: "**/cpm_modules"
+          key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
+
+      - name: configure
+        run: cmake -Sstandalone -Bbuild -DCMAKE_BUILD_TYPE=Release
+
+      - name: build
+        run: cmake --build build -j4
+
+      - name: run
+        run: ./build/Nnmcpp
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nnmcpp-windows
+          path: ./build/Nnmcpp
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: "**/cpm_modules"
+          key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
+
+      - name: configure
+        run: cmake -Sstandalone -Bbuild -DCMAKE_BUILD_TYPE=Release
+
+      - name: build
+        run: cmake --build build -j4
+
+      - name: run
+        run: ./build/Nnmcpp
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nnmcpp-windows
+          path: ./build/Nnmcpp
