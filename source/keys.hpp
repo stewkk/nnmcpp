@@ -17,7 +17,8 @@ static const std::unordered_set<std::string> kKeys = {
     "actor",
     "age",
     "mpaa",
-    "description"
+    "description",
+    "production"
 };
 
 static const std::unordered_map<std::string, std::string> kNormalizedKeys = {
@@ -36,7 +37,7 @@ static const std::unordered_map<std::string, std::string> kNormalizedKeys = {
     {"режиссеры", "director"},
     {"режиссёры", "director"},
     {"страна", "country"},
-    {"производство", "country"},
+    {"производство", "production"},
     {"размер кадра", "video"},
     {"видео", "video"},
     {"видеодек", "video"},
@@ -55,7 +56,7 @@ static const std::unordered_map<std::string, std::string> kNormalizedKeys = {
     {"Режиссеры", "director"},
     {"Режиссёры", "director"},
     {"Страна", "country"},
-    {"Производство", "country"},
+    {"Производство", "production"},
     {"Размер кадра", "video"},
     {"Видео", "video"},
     {"Видеодек", "video"},
