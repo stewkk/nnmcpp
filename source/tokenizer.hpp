@@ -3,24 +3,11 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "stream.hpp"
 #include "keys.hpp"
+#include "lexer.hpp"
 
-namespace nnmcpp {
-namespace parsing {
-
-enum class LexemType {
-    EMPTY,
-    TEXT,
-    COLON,
-    NEWLINE
-};
-
-static const std::unordered_map<LexemType, std::string> kLexemTypeNaming = {
-    {LexemType::EMPTY, "EMPTY"},
-    {LexemType::TEXT, "TEXT"},
-    {LexemType::COLON, "COLON"},
-    {LexemType::NEWLINE, "NEWLINE"}
-};
+namespace nnmcpp::parsing {
 
 enum class TokenType {
     EMPTY,
@@ -54,15 +41,6 @@ static const std::unordered_map<TokenizerState, std::string> kTokenizerStateNami
     {TokenizerState::B, "BROKEN"}
 };
 
-struct Lexem {
-    Lexem();
-    Lexem(LexemType t);
-    Lexem(LexemType t, const std::string& v);
-
-    LexemType type;
-    std::string value;
-};
-
 struct Token {
     Token();
     Token(TokenType t);
@@ -72,38 +50,7 @@ struct Token {
     std::string value;
 };
 
-template <typename T>
-struct Stream {
-public:
-    using type_t = decltype(T::type);
-
-    Stream();
-    Stream(const std::vector<T>& elements);
-
-    T Peek() const;
-    T Read();
-    void Put(const T& elem);
-
-    bool IsBroken();
-    void Break();
-
-private:
-    std::queue<T> buf;
-    bool broken_;
-
-};
-
 using TokenStream = Stream<Token>;
-using LexemStream = Stream<Lexem>;
-
-class Lexer {
-public:
-    LexemStream Tokenize(std::istream& in);
-
-private:
-    Lexem parseLexem(std::istream& in);
-
-};
 
 class Tokenizer {
 public:
@@ -122,6 +69,5 @@ private:
 
 };
 
-}  // namespace lexer
 }  // namespace nnmcpp
 
