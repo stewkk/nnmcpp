@@ -24,7 +24,7 @@ Lexem Lexer::parseLexem(std::istream& in) {
   std::string s;
 
   while (in.good()) {
-    c = in.peek();
+    c = static_cast<char>(in.peek());
     switch (c) {
       case ':':
       case '\n':
