@@ -21,7 +21,7 @@ namespace nnmcpp::standalone {
     try {
       for (const auto& dir_entry : fs::recursive_directory_iterator(path)) {
         if (dir_entry.is_regular_file() && dir_entry.path().filename() == kInfoName) {
-          res.push_back(dir_entry.path());
+          res.push_back(dir_entry.path().string());
         }
       }
     } catch (const std::exception& e) {

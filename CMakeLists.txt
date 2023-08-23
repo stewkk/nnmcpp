@@ -4,10 +4,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ---- Project ----
 
-# Note: update this to your new project's name and version
 project(
   Nnmcpp
-  VERSION 1.0
+  VERSION 1.0.0
   LANGUAGES CXX
 )
 

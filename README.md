@@ -7,9 +7,27 @@
 
 # Nnmcpp
 
+Parser of topic descriptions on the NNM tracker
+
 ## Features
 
+- Library for description parsing
+- CLI with recursive filesystem traversal and serialization to CSV
+- Cross-platform
+
 ## Usage
+
+``` text
+Usage:
+  ./Nnmcpp [OPTION...] positional parameters
+
+  -h, --help     Show help
+  -v, --version  Print the current version number
+  -d, --dry      Only print paths to .info files
+```
+
+### Download binary release for Windows
+ [nnmcpp-windows.zip](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-windows.zip)
 
 ### Build and run the standalone target
 
