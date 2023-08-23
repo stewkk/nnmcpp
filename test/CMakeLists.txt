@@ -36,8 +36,8 @@ endif()
 
 file(GLOB sources CONFIGURE_DEPENDS ../${}/source/**_test.cpp)
 add_executable(${PROJECT_NAME} ${sources})
-target_link_libraries(${PROJECT_NAME} GTest::gtest_main Nnmcpp::Nnmcpp)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
+target_link_libraries(${PROJECT_NAME} GTest::gtest_main GTest::gmock_main Nnmcpp::Nnmcpp)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 
 # enable compiler warnings
 if(NOT TEST_INSTALLED_VERSION)
