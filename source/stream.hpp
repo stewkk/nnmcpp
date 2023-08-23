@@ -5,9 +5,8 @@
 
 namespace nnmcpp::parsing {
 
-template <typename T>
-struct Stream {
-public:
+  template <typename T> struct Stream {
+  public:
     Stream();
     Stream(const std::vector<T>& elements);
 
@@ -18,57 +17,37 @@ public:
     bool IsBroken();
     void Break();
 
-private:
+  private:
     std::queue<T> buf;
     bool broken_;
+  };
 
-};
+  template <typename T> Stream<T>::Stream() : buf(), broken_(false) {}
 
-template <typename T>
-Stream<T>::Stream() :
-    buf(),
-    broken_(false) {}
-
-template <typename T>
-Stream<T>::Stream(const std::vector<T>& elements) :
-    Stream() {
-
+  template <typename T> Stream<T>::Stream(const std::vector<T>& elements) : Stream() {
     for (auto elem : elements) {
-        Put(elem);
+      Put(elem);
     }
-}
+  }
 
-template <typename T>
-T Stream<T>::Peek() const {
-    if (buf.empty())
-        return T();
+  template <typename T> T Stream<T>::Peek() const {
+    if (buf.empty()) return T();
 
     return buf.front();
-}
+  }
 
-template <typename T>
-T Stream<T>::Read() {
-    if (buf.empty())
-        return T();
+  template <typename T> T Stream<T>::Read() {
+    if (buf.empty()) return T();
 
     T elem = buf.front();
     buf.pop();
     return elem;
-}
+  }
 
-template <typename T>
-void Stream<T>::Put(const T& elem) {
-    buf.push(elem);
-}
+  template <typename T> void Stream<T>::Put(const T& elem) { buf.push(elem); }
 
-template <typename T>
-void Stream<T>::Break() {
-    broken_ = true;
-}
+  template <typename T> void Stream<T>::Break() { broken_ = true; }
 
-template <typename T>
-bool Stream<T>::IsBroken() {
-    return broken_;
-}
+  template <typename T> bool Stream<T>::IsBroken() { return broken_; }
 
-} // namespace nnmcpp::parsing
+}  // namespace nnmcpp::parsing

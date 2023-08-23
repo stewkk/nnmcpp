@@ -30,7 +30,7 @@ namespace nnmcpp {
 
     std::string ParseKey() {
       std::stringstream res;
-      for (;stream_.peek() != ':';) {
+      for (; stream_.peek() != ':';) {
         if (stream_.peek() == '\n') {
           throw "TODO";
         }
@@ -43,7 +43,6 @@ namespace nnmcpp {
       auto key = ParseKey();
       std::string rest;
       std::getline(stream_, rest);
-
 
       return {
           .key = "производство",
