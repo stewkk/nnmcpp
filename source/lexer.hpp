@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "stream.hpp"
+#include <nnmcpp/stream.hpp>
 
 namespace nnmcpp::parsing {
 

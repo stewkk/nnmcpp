@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <nnmcpp/serializer.hpp>
+#include <nnmcpp/parser.hpp>
 #include <string>
 #include <unordered_map>
 
@@ -48,18 +49,21 @@ auto main(int argc, char** argv) -> int {
     return 0;
   }
 
-  std::cerr << "FIXME: parsing is not yet implemented";
+  nnmcpp::parsing::Parser parser{};
   for (auto info_file_path : paths) {
+    std::ifstream f;
     try {
-      std::ifstream f(info_file_path);
-      std::stringstream buf;
-      buf << f.rdbuf();
-      // NOTE: get file contents with buf.str()
+      f.open(info_file_path);
     } catch (const std::exception& e) {
-      std::cerr << fmt::format("unhandled exception at reading {}: {}\n", info_file_path, e.what());
+      std::cerr << fmt::format("unhandled exception at {}: {}\n", info_file_path, e.what());
     }
 
-    const auto info = nnmcpp::Info{"test", "translation"};  // TODO: call parser here
+    nnmcpp::parsing::Info info;
+    try {
+      info = parser.parse(f);
+    } catch (const std::exception& e) {
+      std::cerr << fmt::format("unhandled exception at parsing {}: {}\n", info_file_path, e.what());
+    }
     std::cout << nnmcpp::Serialize(info) << '\n';
   }
 

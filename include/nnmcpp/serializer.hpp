@@ -3,12 +3,11 @@
 #include <optional>
 #include <string>
 
+#include <nnmcpp/parser.hpp>
+
 namespace nnmcpp {
 
-  struct Info {
-    std::string title;
-    std::optional<std::string> translation;
-  };
+  using Info = nnmcpp::parsing::Info;
 
   std::string Serialize(const Info& info);
 

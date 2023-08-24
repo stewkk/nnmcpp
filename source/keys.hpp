@@ -51,10 +51,6 @@ static const std::unordered_map<std::string, std::string> kNormalizedKeys
        {"Актеры", "actor"},
        {"актёры", "actor"},
        {"Актёры", "actor"},
-       {"возраст", "age"},
-       {"Возраст", "age"},
-       {"Рейтинг MPAA", "mpaa"},
-       {"рейтинг MPAA", "mpaa"},
        {"аудио #1", "audio"},
        {"Аудио #1", "audio"},
        {"аудио #2", "audio"},
@@ -65,5 +61,4 @@ static const std::unordered_map<std::string, std::string> kNormalizedKeys
        {"Аудио #4", "audio"},
        {"Аудио #5", "audio"},
        {"Аудио #5", "audio"},
-       {"описание", "description"},
-       {"Описание", "description"}};
+       };

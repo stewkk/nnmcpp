@@ -34,6 +34,22 @@ CPMAddPackage(
   OPTIONS "FMT_INSTALL YES" # create an installable target
 )
 
+CPMAddPackage(
+  NAME Boost
+  VERSION 1.82.0
+  URL https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz
+  DOWNLOAD_ONLY True
+)
+
+if(Boost_ADDED)
+  # Define the header-only Boost target
+  add_library(Boost::boost INTERFACE IMPORTED GLOBAL)
+  target_include_directories(Boost::boost SYSTEM INTERFACE ${Boost_SOURCE_DIR})
+
+  # Disable autolink
+  target_compile_definitions(Boost::boost INTERFACE BOOST_ALL_NO_LIB=1)
+endif()
+
 # ---- Add source files ----
 
 # Note: globbing sources is considered bad practice as CMake's generators may not detect new files
@@ -54,6 +70,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>
 
 # Link dependencies
 target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt)
+target_link_libraries(${PROJECT_NAME} PUBLIC Boost::boost)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

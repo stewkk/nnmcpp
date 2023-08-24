@@ -1,4 +1,4 @@
-#include "parser.hpp"
+#include <nnmcpp/parser.hpp>
 
 #include <istream>
 #include <map>
