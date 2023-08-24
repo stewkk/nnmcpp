@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14...3.22)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
+set(CMAKE_FIND_LIBRARY_SUFFIXES .a .lib)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 project(NnmcppTests LANGUAGES CXX)
 
