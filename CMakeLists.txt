@@ -6,7 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(
   Nnmcpp
-  VERSION 1.0.0
+  VERSION 1.1.0
   LANGUAGES CXX
 )
 
@@ -70,7 +70,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>
 
 # Link dependencies
 target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt)
-target_link_libraries(${PROJECT_NAME} PUBLIC Boost::boost)
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::boost)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
