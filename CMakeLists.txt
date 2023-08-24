@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 3.14...3.22)
+cmake_minimum_required(VERSION 3.15...3.22)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 set(CMAKE_FIND_LIBRARY_SUFFIXES .a .lib)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 # ---- Project ----
 
@@ -33,7 +34,7 @@ CPMAddPackage(
   NAME fmt
   GIT_TAG 9.1.0
   GITHUB_REPOSITORY fmtlib/fmt
-  OPTIONS "FMT_INSTALL YES" # create an installable target
+  OPTIONS "FMT_INSTALL YES"
 )
 
 CPMAddPackage(

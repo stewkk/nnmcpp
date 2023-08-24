@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.14...3.22)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 set(CMAKE_FIND_LIBRARY_SUFFIXES .a .lib)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 project(NnmcppStandalone LANGUAGES CXX)
 
@@ -30,6 +31,9 @@ add_executable(${PROJECT_NAME} ${headers} ${sources})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/source)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20 OUTPUT_NAME "Nnmcpp")
+set_target_properties(
+  ${PROJECT_NAME} PROPERTIES CXX_STANDARD 20 OUTPUT_NAME "Nnmcpp"
+                             MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+)
 
 target_link_libraries(${PROJECT_NAME} Nnmcpp::Nnmcpp cxxopts)
