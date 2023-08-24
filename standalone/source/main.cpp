@@ -10,9 +10,16 @@
 #include <string>
 #include <unordered_map>
 
+#ifdef _MSC_VER
+#include <clocale>
+#endif
+
 using nnmcpp::standalone::FindInfoFiles;
 
 auto main(int argc, char** argv) -> int {
+#ifdef _MSC_VER
+  setlocale(LC_ALL, "Russian");
+#endif
   cxxopts::Options options(*argv, ".info file parser");
 
   std::string path;
