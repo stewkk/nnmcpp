@@ -76,20 +76,6 @@ These dependencies can be easily installed using pip.
 pip install clang-format==14.0.6 cmake_format==0.6.11 pyyaml
 ```
 
-### Build the documentation
-
-The documentation is automatically built and [published](https://thelartians.github.io/ModernCppStarter) whenever a [GitHub Release](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) is created.
-To manually build documentation, call the following command.
-
-```bash
-cmake -S documentation -B build/doc
-cmake --build build/doc --target GenerateDocs
-# view the docs
-open build/doc/doxygen/html/index.html
-```
-
-To build the documentation locally, you will need Doxygen, jinja2 and Pygments installed on your system.
-
 ### Build everything at once
 
 The project also includes an `all` directory that allows building all targets at the same time.
