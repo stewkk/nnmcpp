@@ -1,7 +1,6 @@
-#include "parser.hpp"
-
 #include <istream>
 #include <map>
+#include <nnmcpp/parser.hpp>
 #include <stdexcept>
 #include <utility>
 

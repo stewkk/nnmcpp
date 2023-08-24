@@ -1,9 +1,8 @@
 #pragma once
 
+#include <nnmcpp/stream.hpp>
 #include <string>
 #include <unordered_map>
-
-#include "stream.hpp"
 
 namespace nnmcpp::parsing {
 

@@ -1,11 +1,11 @@
 #include <istream>
+#include <nnmcpp/stream.hpp>
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>
 
 #include "keys.hpp"
 #include "lexer.hpp"
-#include "stream.hpp"
 
 namespace nnmcpp::parsing {
 
