@@ -1,3 +1,6 @@
+#include <iostream>
+
+#include "lexer.hpp"
 #include "tokenizer.hpp"
 
 using namespace nnmcpp::parsing;
@@ -20,8 +23,12 @@ TokenStream Tokenizer::Tokenize(std::istream& in) {
 
   for (Lexem lexem = lexem_stream.Read(); lexem.type != LexemType::EMPTY;
        lexem = lexem_stream.Read()) {
+    std::cout << lexem.value << " " << kLexemTypeNaming.find(lexem.type)->second << " " << kTokenizerStateNaming.find(state)->second << " -> ";
     transit(lexem);
+    std::cout << kTokenizerStateNaming.find(state)->second << std::endl; 
   }
+
+  transit(lexem_stream.Read());
 
   return stream;
 }
@@ -31,6 +38,8 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::WT:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          return;
         case LexemType::TEXT:
         case LexemType::COLON:
           state = TokenizerState::TT;
@@ -46,6 +55,8 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::TT:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          return;
         case LexemType::TEXT:
         case LexemType::COLON:
           state = TokenizerState::TT;
@@ -62,6 +73,8 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::P:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          return;
         case LexemType::TEXT:
           state = TokenizerState::PCH;
           key.value += lex.value;
@@ -80,6 +93,8 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::PCH:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          return;
         case LexemType::TEXT:
           state = TokenizerState::PCH;
           key.value += lex.value;
@@ -107,6 +122,10 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::LT:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          stream.Put(Token(TokenType::TEXT, text.value));
+          text.value = "";
+          return;
         case LexemType::TEXT:
         case LexemType::COLON:
           state = TokenizerState::LT;
@@ -121,6 +140,10 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::KT:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          stream.Put(Token(TokenType::TEXT, text.value));
+          text.value = "";
+          return;
         case LexemType::TEXT:
           state = TokenizerState::CH;
           key.value += lex.value;
@@ -140,6 +163,9 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::CH:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          stream.Put(Token(TokenType::TEXT, text.value));
+          return;
         case LexemType::TEXT:
           state = TokenizerState::CH;
           text.value += lex.value;
@@ -171,6 +197,8 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::T:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          return;
         case LexemType::TEXT:
         case LexemType::COLON:
           state = TokenizerState::T;
@@ -185,6 +213,8 @@ void Tokenizer::transit(Lexem lex) {
     case TokenizerState::MT:
       switch (lex.type) {
         case LexemType::EMPTY:
+          state = TokenizerState::F;
+          return;
         case LexemType::TEXT:
         case LexemType::COLON:
           state = TokenizerState::T;

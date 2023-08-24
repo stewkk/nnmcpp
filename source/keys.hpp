@@ -6,7 +6,7 @@
 
 static const std::unordered_set<std::string> kKeys
     = {"translation", "quality", "duration", "genre", "audio", "subtitles",   "director",
-       "country",     "video",   "actor",    "age",   "mpaa",  "description", "production"};
+       "country",     "video",   "actor",    "age",   "mpaa",  "description", "production", "description"};
 
 static const std::unordered_map<std::string, std::string> kNormalizedKeys = {
     {"перевод", "translation"},
@@ -61,4 +61,9 @@ static const std::unordered_map<std::string, std::string> kNormalizedKeys = {
     {"Аудио #4", "audio"},
     {"Аудио #5", "audio"},
     {"Аудио #5", "audio"},
+    {"Описание", "description"},
+    {"описание", "description"},
+    {"Рейтинг MPAA", "mpaa"},
+    {"Возраст", "age"},
+    {"возраст", "age"},
 };
