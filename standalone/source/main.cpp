@@ -11,7 +11,7 @@
 #include <unordered_map>
 
 #ifdef _MSC_VER
-#include <clocale>
+#  include <clocale>
 #endif
 
 using nnmcpp::standalone::FindInfoFiles;
