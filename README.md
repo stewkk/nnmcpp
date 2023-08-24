@@ -27,7 +27,7 @@ Usage:
 ```
 
 ### Download binary release for Windows
- [nnmcpp-windows.zip](https://github.com/stewkk/nnmcpp/releases/download/v1.0.0/nnmcpp-windows.zip)
+[Nnmcpp.exe](https://github.com/stewkk/nnmcpp/releases/download/v1.1.0/Nnmcpp.exe)
 
 ### Build and run the standalone target
 
