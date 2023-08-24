@@ -1,5 +1,5 @@
-#include <istream>
 #include <iostream>
+#include <istream>
 #include <nnmcpp/parser.hpp>
 #include <stdexcept>
 #include <utility>
@@ -41,8 +41,8 @@ Info Parser::parse(std::istream& in) {
 
   for (auto token = token_stream.Read(); token.type != TokenType::EMPTY;
        token = token_stream.Read()) {
-
-    std::cout << "[Parser::parse] " << kTokenTypeNaming.find(token.type)->second << " " << token.value << std::endl;
+    std::cout << "[Parser::parse] " << kTokenTypeNaming.find(token.type)->second << " "
+              << token.value << std::endl;
     switch (state) {
       case 0:
         if (token.type != TokenType::KEY) continue;
@@ -57,7 +57,8 @@ Info Parser::parse(std::istream& in) {
 
         try {
           info.set(key, value);
-        } catch (...) {}
+        } catch (...) {
+        }
 
         state = 0;
         break;

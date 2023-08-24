@@ -1,7 +1,8 @@
+#include "tokenizer.hpp"
+
 #include <iostream>
 
 #include "lexer.hpp"
-#include "tokenizer.hpp"
 
 using namespace nnmcpp::parsing;
 
@@ -23,9 +24,10 @@ TokenStream Tokenizer::Tokenize(std::istream& in) {
 
   for (Lexem lexem = lexem_stream.Read(); lexem.type != LexemType::EMPTY;
        lexem = lexem_stream.Read()) {
-    std::cout << lexem.value << " " << kLexemTypeNaming.find(lexem.type)->second << " " << kTokenizerStateNaming.find(state)->second << " -> ";
+    std::cout << lexem.value << " " << kLexemTypeNaming.find(lexem.type)->second << " "
+              << kTokenizerStateNaming.find(state)->second << " -> ";
     transit(lexem);
-    std::cout << kTokenizerStateNaming.find(state)->second << std::endl; 
+    std::cout << kTokenizerStateNaming.find(state)->second << std::endl;
   }
 
   transit(lexem_stream.Read());
