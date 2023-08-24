@@ -1,9 +1,8 @@
 #pragma once
 
+#include <nnmcpp/parser.hpp>
 #include <optional>
 #include <string>
-
-#include <nnmcpp/parser.hpp>
 
 namespace nnmcpp {
 

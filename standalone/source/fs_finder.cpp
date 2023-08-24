@@ -19,7 +19,8 @@ namespace nnmcpp::standalone {
     std::vector<std::string> res;
 
     try {
-      for (const auto& dir_entry : fs::recursive_directory_iterator(path, fs::directory_options::skip_permission_denied)) {
+      for (const auto& dir_entry :
+           fs::recursive_directory_iterator(path, fs::directory_options::skip_permission_denied)) {
         if (dir_entry.is_regular_file() && dir_entry.path().filename() == kInfoName) {
           res.push_back(dir_entry.path().string());
         }

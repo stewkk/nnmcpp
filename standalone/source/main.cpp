@@ -5,8 +5,8 @@
 #include <fs_finder.hpp>
 #include <fstream>
 #include <iostream>
-#include <nnmcpp/serializer.hpp>
 #include <nnmcpp/parser.hpp>
+#include <nnmcpp/serializer.hpp>
 #include <string>
 #include <unordered_map>
 

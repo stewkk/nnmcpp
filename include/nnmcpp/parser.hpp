@@ -1,10 +1,9 @@
 #pragma once
 
+#include <nnmcpp/stream.hpp>
 #include <string>
 #include <unordered_map>
 #include <utility>
-
-#include <nnmcpp/stream.hpp>
 
 #define LABELED_PAIR(x) \
   { #x, x }
@@ -32,10 +31,11 @@ namespace nnmcpp::parsing {
     void set(const std::string& k, const std::string& v);
 
     std::unordered_map<std::string, std::string&> fields
-        = {LABELED_PAIR(title),      LABELED_PAIR(translation), LABELED_PAIR(year),
-           LABELED_PAIR(director),   LABELED_PAIR(country),     LABELED_PAIR(production),
-           LABELED_PAIR(video), LABELED_PAIR(genre),       LABELED_PAIR(audio),
-           LABELED_PAIR(actor), LABELED_PAIR(quality), LABELED_PAIR(duration), LABELED_PAIR(subtitles)};
+        = {LABELED_PAIR(title),    LABELED_PAIR(translation), LABELED_PAIR(year),
+           LABELED_PAIR(director), LABELED_PAIR(country),     LABELED_PAIR(production),
+           LABELED_PAIR(video),    LABELED_PAIR(genre),       LABELED_PAIR(audio),
+           LABELED_PAIR(actor),    LABELED_PAIR(quality),     LABELED_PAIR(duration),
+           LABELED_PAIR(subtitles)};
   };
 
   class Parser {
