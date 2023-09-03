@@ -1,25 +1,13 @@
 #pragma once
 
 #include <string>
-#include <unordered_set>
 #include <unordered_map>
+#include <unordered_set>
 
-static const std::unordered_set<std::string> kKeys = {
-    "translation",
-    "quality",
-    "duration",
-    "genre",
-    "audio",
-    "subtitles",
-    "director",
-    "country",
-    "video",
-    "actor",
-    "age",
-    "mpaa",
-    "description",
-    "production"
-};
+static const std::unordered_set<std::string> kKeys
+    = {"translation", "quality",  "duration",    "genre",      "audio",
+       "subtitles",   "director", "country",     "video",      "actor",
+       "age",         "mpaa",     "description", "production", "description"};
 
 static const std::unordered_map<std::string, std::string> kNormalizedKeys = {
     {"перевод", "translation"},
@@ -64,10 +52,6 @@ static const std::unordered_map<std::string, std::string> kNormalizedKeys = {
     {"Актеры", "actor"},
     {"актёры", "actor"},
     {"Актёры", "actor"},
-    {"возраст", "age"},
-    {"Возраст", "age"},
-    {"Рейтинг MPAA", "mpaa"},
-    {"рейтинг MPAA", "mpaa"},
     {"аудио #1", "audio"},
     {"Аудио #1", "audio"},
     {"аудио #2", "audio"},
@@ -78,7 +62,9 @@ static const std::unordered_map<std::string, std::string> kNormalizedKeys = {
     {"Аудио #4", "audio"},
     {"Аудио #5", "audio"},
     {"Аудио #5", "audio"},
+    {"Описание", "description"},
     {"описание", "description"},
-    {"Описание", "description"}
+    {"Рейтинг MPAA", "mpaa"},
+    {"Возраст", "age"},
+    {"возраст", "age"},
 };
-

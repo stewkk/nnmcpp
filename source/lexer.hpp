@@ -1,45 +1,36 @@
 #pragma once
 
+#include <nnmcpp/stream.hpp>
 #include <string>
 #include <unordered_map>
 
-#include "stream.hpp"
-
 namespace nnmcpp::parsing {
 
-enum class LexemType {
-    EMPTY,
-    TEXT,
-    COLON,
-    NEWLINE
-};
+  enum class LexemType { EMPTY, TEXT, COLON, NEWLINE };
 
-static const std::unordered_map<LexemType, std::string> kLexemTypeNaming = {
-    {LexemType::EMPTY, "EMPTY"},
-    {LexemType::TEXT, "TEXT"},
-    {LexemType::COLON, "COLON"},
-    {LexemType::NEWLINE, "NEWLINE"}
-};
+  static const std::unordered_map<LexemType, std::string> kLexemTypeNaming
+      = {{LexemType::EMPTY, "EMPTY"},
+         {LexemType::TEXT, "TEXT"},
+         {LexemType::COLON, "COLON"},
+         {LexemType::NEWLINE, "NEWLINE"}};
 
-struct Lexem {
+  struct Lexem {
     Lexem();
     Lexem(LexemType t);
     Lexem(LexemType t, const std::string& v);
 
     LexemType type;
     std::string value;
-};
+  };
 
-using LexemStream = Stream<Lexem>;
+  using LexemStream = Stream<Lexem>;
 
-class Lexer {
-public:
+  class Lexer {
+  public:
     LexemStream Tokenize(std::istream& in);
 
-private:
+  private:
     Lexem parseLexem(std::istream& in);
-
-};
+  };
 
 }  // namespace nnmcpp::parsing
-

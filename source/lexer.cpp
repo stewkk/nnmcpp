@@ -1,53 +1,45 @@
-#include <istream>
-
 #include "lexer.hpp"
+
+#include <istream>
 
 using namespace nnmcpp::parsing;
 
-Lexem::Lexem() :
-    type(LexemType::EMPTY) {}
+Lexem::Lexem() : type(LexemType::EMPTY) {}
 
-Lexem::Lexem(LexemType t) :
-    type(t) {}
+Lexem::Lexem(LexemType t) : type(t) {}
 
-Lexem::Lexem(LexemType t, const std::string& v) :
-    type(t),
-    value(v) {}
+Lexem::Lexem(LexemType t, const std::string& v) : type(t), value(v) {}
 
 LexemStream Lexer::Tokenize(std::istream& in) {
-    LexemStream stream;
-    Lexem lexem;
+  LexemStream stream;
+  Lexem lexem;
 
-    while (in.good() && (lexem = parseLexem(in)).type != LexemType::EMPTY)
-        stream.Put(lexem);
+  while (in.good() && (lexem = parseLexem(in)).type != LexemType::EMPTY) stream.Put(lexem);
 
-    return stream;
+  return stream;
 }
 
 Lexem Lexer::parseLexem(std::istream& in) {
-    char c;
-    std::string s;
+  char c;
+  std::string s;
 
-    while (in.good()) {
-        c = in.peek();
-        switch (c) {
-            case ':':
-            case '\n':
-                if (!s.empty())
-                    return Lexem(LexemType::TEXT, s);
+  while (in.good()) {
+    c = static_cast<char>(in.peek());
+    switch (c) {
+      case ':':
+      case '\n':
+        if (!s.empty()) return Lexem(LexemType::TEXT, s);
 
-                in.get();
-                return Lexem((c == '\n' ? LexemType::NEWLINE : LexemType::COLON), (c == '\n' ? "\n" : ":"));
+        in.get();
+        return Lexem((c == '\n' ? LexemType::NEWLINE : LexemType::COLON), (c == '\n' ? "\n" : ":"));
 
-            default:
-                in.get();
-                s.push_back(c);
-        }
+      default:
+        in.get();
+        s.push_back(c);
     }
+  }
 
-    if (!s.empty())
-        return Lexem(LexemType::TEXT, s);
+  if (!s.empty()) return Lexem(LexemType::TEXT, s);
 
-    return Lexem(LexemType::EMPTY, "");
+  return Lexem(LexemType::EMPTY, "");
 }
-

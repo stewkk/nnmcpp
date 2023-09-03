@@ -2,5 +2,7 @@
 /.vscode
 /cpm_modules
 .DS_Store
-.cache
+/CMakeFiles/
+/.cache/
+/CMakeCache.txt
 compile_commands.json

@@ -7,9 +7,27 @@
 
 # Nnmcpp
 
+Parser of topic descriptions on the NNM tracker
+
 ## Features
 
+- Library for description parsing
+- CLI with recursive filesystem traversal and serialization to CSV
+- Cross-platform
+
 ## Usage
+
+``` text
+Usage:
+  ./Nnmcpp [OPTION...] positional parameters
+
+  -h, --help     Show help
+  -v, --version  Print the current version number
+  -d, --dry      Only print paths to .info files
+```
+
+### Download binary release for Windows
+[Nnmcpp.exe](https://github.com/stewkk/nnmcpp/releases/download/v1.1.0/Nnmcpp.exe)
 
 ### Build and run the standalone target
 
@@ -57,20 +75,6 @@ These dependencies can be easily installed using pip.
 ```bash
 pip install clang-format==14.0.6 cmake_format==0.6.11 pyyaml
 ```
-
-### Build the documentation
-
-The documentation is automatically built and [published](https://thelartians.github.io/ModernCppStarter) whenever a [GitHub Release](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) is created.
-To manually build documentation, call the following command.
-
-```bash
-cmake -S documentation -B build/doc
-cmake --build build/doc --target GenerateDocs
-# view the docs
-open build/doc/doxygen/html/index.html
-```
-
-To build the documentation locally, you will need Doxygen, jinja2 and Pygments installed on your system.
 
 ### Build everything at once
 

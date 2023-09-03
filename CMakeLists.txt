@@ -1,13 +1,15 @@
-cmake_minimum_required(VERSION 3.14...3.22)
+cmake_minimum_required(VERSION 3.15...3.22)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
+set(CMAKE_FIND_LIBRARY_SUFFIXES .a .lib)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 # ---- Project ----
 
-# Note: update this to your new project's name and version
 project(
   Nnmcpp
-  VERSION 1.0
+  VERSION 1.1.0
   LANGUAGES CXX
 )
 
@@ -32,8 +34,24 @@ CPMAddPackage(
   NAME fmt
   GIT_TAG 9.1.0
   GITHUB_REPOSITORY fmtlib/fmt
-  OPTIONS "FMT_INSTALL YES" # create an installable target
+  OPTIONS "FMT_INSTALL YES"
 )
+
+CPMAddPackage(
+  NAME Boost
+  VERSION 1.82.0
+  URL https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz
+  DOWNLOAD_ONLY True
+)
+
+if(Boost_ADDED)
+  # Define the header-only Boost target
+  add_library(Boost::boost INTERFACE IMPORTED GLOBAL)
+  target_include_directories(Boost::boost SYSTEM INTERFACE ${Boost_SOURCE_DIR})
+
+  # Disable autolink
+  target_compile_definitions(Boost::boost INTERFACE BOOST_ALL_NO_LIB=1)
+endif()
 
 # ---- Add source files ----
 
@@ -54,7 +72,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 
 # Link dependencies
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt)
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::boost)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
