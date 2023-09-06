@@ -14,12 +14,19 @@ namespace nnmcpp::parsing {
 
   struct Info {
     std::string title;
-    std::string translation;
+    std::string ru_title;
+    std::string en_title;
     std::string year;
+
+    std::string video;
+    std::string codec;
+    std::string video_w;
+    std::string video_h;
+
+    std::string translation;
     std::string director;
     std::string country;
     std::string production;
-    std::string video;
     std::string quality;
     std::string genre;
     std::string audio;
@@ -34,8 +41,12 @@ namespace nnmcpp::parsing {
         = {LABELED_PAIR(title),    LABELED_PAIR(translation), LABELED_PAIR(year),
            LABELED_PAIR(director), LABELED_PAIR(country),     LABELED_PAIR(production),
            LABELED_PAIR(video),    LABELED_PAIR(genre),       LABELED_PAIR(audio),
-           LABELED_PAIR(actor),    LABELED_PAIR(quality),     LABELED_PAIR(duration),
-           LABELED_PAIR(subtitles)};
+           LABELED_PAIR(actor),    LABELED_PAIR(duration),    LABELED_PAIR(subtitles),
+           LABELED_PAIR(ru_title), LABELED_PAIR(en_title), LABELED_PAIR(codec),
+           LABELED_PAIR(video_w),  LABELED_PAIR(video_h),  LABELED_PAIR(quality)};
+
+    void parse_title(const std::string& title);
+    void parse_video(const std::string& video);
   };
 
   class Parser {

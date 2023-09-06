@@ -24,13 +24,18 @@ TEST(ParserTest, SimpleParse) {
 
   Info expected_info;
   expected_info.title = "Сон в летнюю ночь / A Midsummer Night's Dream (1999)";
+  expected_info.ru_title = "Сон в летнюю ночь";
+  expected_info.en_title = "A Midsummer Night's Dream";
+  expected_info.year = "1999";
   expected_info.translation = "";
-  expected_info.year = "";
   expected_info.director = " Майкл Хоффман";
   expected_info.country = "";
   expected_info.production
       = " Италия, Великобритания, США (Fox Searchlight Pictures, Regency Enterprises, Taurus Film)";
   expected_info.video = " MPEG-2, 720x576@1024x576, ~5500 Kbps";
+  expected_info.codec = "MPEG-2";
+  expected_info.video_w = "1024";
+  expected_info.video_h = "576";
   expected_info.quality = " DVDRemux";
   expected_info.genre = " комедия, фэнтези";
   expected_info.audio = " AC3, 2 ch, 192 Kbps, русский";
@@ -45,12 +50,19 @@ TEST(ParserTest, SimpleParse) {
   std::pair<std::string, std::string> empty;
 
   ASSERT_EQ(expected_info.title, got_info.title);
-  ASSERT_EQ(expected_info.translation, got_info.year);
+  ASSERT_EQ(expected_info.ru_title, got_info.ru_title);
+  ASSERT_EQ(expected_info.en_title, got_info.en_title);
   ASSERT_EQ(expected_info.year, got_info.year);
+
+  ASSERT_EQ(expected_info.video, got_info.video);
+  ASSERT_EQ(expected_info.codec, got_info.codec);
+  ASSERT_EQ(expected_info.video_w, got_info.video_w);
+  ASSERT_EQ(expected_info.video_h, got_info.video_h);
+
+  ASSERT_EQ(expected_info.translation, got_info.translation);
   ASSERT_EQ(expected_info.director, got_info.director);
   ASSERT_EQ(expected_info.country, got_info.country);
   ASSERT_EQ(expected_info.production, got_info.production);
-  ASSERT_EQ(expected_info.video, got_info.video);
   ASSERT_EQ(expected_info.quality, got_info.quality);
   ASSERT_EQ(expected_info.genre, got_info.genre);
   ASSERT_EQ(expected_info.audio, got_info.audio);
