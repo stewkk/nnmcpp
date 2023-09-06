@@ -3,25 +3,66 @@
 #include <nnmcpp/parser.hpp>
 #include <stdexcept>
 #include <utility>
+#include <regex>
 
 #include "tokenizer.hpp"
+#include "langs.hpp"
 
 using namespace nnmcpp::parsing;
+
+void Title::parse(const std::string& target) {
+  std::regex pattern(R"((.*) / (.*) \(((?:19|20)\d{2})\))");
+  std::smatch match;
+  std::regex_match(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong title format");
+  }
+
+  raw = target;
+
+  ru_title = match.str(1);
+  en_title = match.str(2);
+  year = match.str(3);
+}
+
+void Video::parse(const std::string& target) {
+  std::regex pattern(R"(\s*.*, (?:\d+x\d+@)*(\d+)x(\d+), ~\d+ Kbps)");
+  std::smatch match;
+  std::regex_match(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong resolution format");
+  }
+
+  raw = target;
+
+  width = match.str(1);
+  height = match.str(2);
+}
+
+void StringField::parse(const std::string& target) {
+  raw = target;
+}
 
 const std::string& Info::get(const std::string& k) {
   auto field = fields.find(k);
 
-  if (field == fields.end()) throw std::logic_error("Not such field in structure");
+  if (field == fields.end()) {
+    throw std::logic_error("Not such field in structure");
+  }
 
-  return field->second;
+  return field->second.raw;
 }
 
 void Info::set(const std::string& k, const std::string& v) {
   auto field = fields.find(k);
 
-  if (field == fields.end()) throw std::logic_error("Not such field in structure");
+  if (field == fields.end()) {
+    throw std::logic_error("Not such field in structure");
+  }
 
-  field->second = v;
+  field->second.parse(v);
 }
 
 Info Parser::parse(std::istream& in) {
@@ -32,7 +73,9 @@ Info Parser::parse(std::istream& in) {
 
   Token title = token_stream.Read();
 
-  if (title.type != TokenType::TITLE) throw std::logic_error("There is no title in parsing text");
+  if (title.type != TokenType::TITLE) {
+    throw std::logic_error("There is no title in parsing text");
+  }
 
   info.set("title", title.value);
 
@@ -55,8 +98,7 @@ Info Parser::parse(std::istream& in) {
 
         try {
           info.set(key, value);
-        } catch (...) {
-        }
+        } catch (...) {}
 
         state = 0;
         break;

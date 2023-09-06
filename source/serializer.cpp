@@ -6,21 +6,21 @@ namespace nnmcpp {
 
   std::string Serialize(const Info& info) {
     std::vector<std::string> fields = {
-        info.title,
-        info.translation, /* TODO: strange encoding of translation type */
-        info.year,
+        info.title.raw,
+        info.translation.raw, /* TODO: strange encoding of translation type */
+        info.title.year,
         boost::algorithm::join(
-            std::vector<std::string>{info.director, info.country, info.production}, "/"),
+            std::vector<std::string>{info.director.raw, info.country.raw, info.production.raw}, "/"),
         "", /* TODO: place on hard drive */
-        info.video,
-        info.quality,
-        info.duration,
-        info.genre,
+        info.video.raw,
+        info.quality.raw,
+        info.duration.raw,
+        info.genre.raw,
         "", /* empty field */
         "", /* TODO: extra content file */
-        info.audio,
-        info.subtitles,
-        info.actor,
+        info.audio.raw,
+        info.subtitles.raw,
+        info.actor.raw,
         "" /* empty field */
     };
     return boost::algorithm::join(fields, "\\");
