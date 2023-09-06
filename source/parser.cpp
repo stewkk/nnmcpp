@@ -6,8 +6,44 @@
 #include <regex>
 
 #include "tokenizer.hpp"
+#include "langs.hpp"
 
 using namespace nnmcpp::parsing;
+
+void Title::parse(const std::string& target) {
+  std::regex pattern(R"((.*) / (.*) \(((?:19|20)\d{2})\))");
+  std::smatch match;
+  std::regex_match(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong title format");
+  }
+
+  raw = target;
+
+  ru_title = match.str(1);
+  en_title = match.str(2);
+  year = match.str(3);
+}
+
+void Video::parse(const std::string& target) {
+  std::regex pattern(R"(\s*.*, (?:\d+x\d+@)*(\d+)x(\d+), ~\d+ Kbps)");
+  std::smatch match;
+  std::regex_match(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong resolution format");
+  }
+
+  raw = target;
+
+  width = match.str(1);
+  height = match.str(2);
+}
+
+void StringField::parse(const std::string& target) {
+  raw = target;
+}
 
 const std::string& Info::get(const std::string& k) {
   auto field = fields.find(k);
@@ -16,7 +52,7 @@ const std::string& Info::get(const std::string& k) {
     throw std::logic_error("Not such field in structure");
   }
 
-  return field->second;
+  return field->second.raw;
 }
 
 void Info::set(const std::string& k, const std::string& v) {
@@ -26,42 +62,7 @@ void Info::set(const std::string& k, const std::string& v) {
     throw std::logic_error("Not such field in structure");
   }
 
-  if (field->first == "title") {
-    parse_title(v);
-  } else if (field->first == "video") {
-    parse_video(v);
-  }
-
-  field->second = v;
-}
-
-
-void Info::parse_title(const std::string& title) {
-  std::regex title_pattern(R"((.*) / (.*) \(((?:19|20)\d{2})\))");
-  std::smatch match;
-  std::regex_match(title, match, title_pattern);
-
-  if (match.empty()) {
-    throw std::runtime_error("Wrong title format");
-  }
-
-  fields.find("ru_title")->second = match.str(1);
-  fields.find("en_title")->second = match.str(2);
-  fields.find("year")->second = match.str(3);
-}
-
-void Info::parse_video(const std::string& video) {
-  std::regex resolution_pattern(R"(\s*(.*), (?:\d+x\d+@)*((\d+)x(\d+)), ~(\d+) (Kbps))");
-  std::smatch match;
-  std::regex_match(video, match, resolution_pattern);
-
-  if (match.empty()) {
-    throw std::runtime_error("Wrong resolution format");
-  }
-
-  fields.find("codec")->second = match.str(1);
-  fields.find("video_w")->second = match.str(3);
-  fields.find("video_h")->second = match.str(4);
+  field->second.parse(v);
 }
 
 Info Parser::parse(std::istream& in) {
