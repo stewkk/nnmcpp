@@ -24,6 +24,7 @@ TokenStream Tokenizer::Tokenize(std::istream& in) {
 
   for (Lexem lexem = lexem_stream.Read(); lexem.type != LexemType::EMPTY;
        lexem = lexem_stream.Read()) {
+    // std::cout << kLexemTypeNaming.find(lexem.type)->second << ": " << lexem.value << std::endl;
     transit(lexem);
   }
 

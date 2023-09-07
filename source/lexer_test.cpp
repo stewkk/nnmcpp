@@ -14,6 +14,9 @@ static std::filesystem::path AbsolutePath(const std::filesystem::path& path) {
 
 static const std::string kInfoPath = "static/00_info.txt";
 static const std::string kOtherInfoPath = "static/01_info.txt";
+static const std::string k02InfoPath = "static/02_info.txt";
+static const std::string k03InfoPath = "static/02_info.txt";
+static const std::string k04InfoPath = "static/02_info.txt";
 
 TEST(LexerTest, SimpleTokenize) {
   Lexer lexer;
@@ -26,10 +29,8 @@ TEST(LexerTest, SimpleTokenize) {
   Lexem colon = Lexem(LexemType::COLON, ":");
 
   LexemStream expected_stream(
-      {Lexem(LexemType::TEXT, "Сон в летнюю ночь / A Midsummer Night's Dream (1999)"),
-       newline,
-       Lexem(LexemType::TEXT, "pic"),
-       newline,
+      {Lexem(LexemType::TEXT, "Сон в летнюю ночь / A Midsummer Night's Dream (1999)"), newline,
+       Lexem(LexemType::TEXT, "pic"), newline,
        Lexem(LexemType::TEXT, "Производство"),
        colon,
        Lexem(LexemType::TEXT,
@@ -121,7 +122,7 @@ TEST(LexerTest, SimpleTokenize) {
 
   while ((got_lexem = got_stream.Read()).type != LexemType::EMPTY
          && (expected_lexem = expected_stream.Read()).type != LexemType::EMPTY) {
-    ASSERT_EQ(kLexemTypeNaming.find(got_lexem.type)->second,
+    EXPECT_EQ(kLexemTypeNaming.find(got_lexem.type)->second,
               kLexemTypeNaming.find(expected_lexem.type)->second);
     ASSERT_EQ(got_lexem.value, expected_lexem.value);
   }
@@ -238,3 +239,56 @@ TEST(LexerTest, OtherSimpleTokenize) {
               kLexemTypeNaming.find(expected_lexem.type)->second);
   }
 }
+
+TEST(LexerTest, SimpleTokenize_02) {
+  Lexer lexer;
+
+  std::fstream info_file(AbsolutePath(k02InfoPath));
+  LexemStream got_stream = lexer.Tokenize(info_file);
+  info_file.close();
+
+  Lexem newline = Lexem(LexemType::NEWLINE, "\n");
+  Lexem colon = Lexem(LexemType::COLON, ":");
+
+  LexemStream expected_stream({
+    Lexem(LexemType::TEXT, "Жаркое лето / Summer City (1977) DVDRip"), newline,
+    Lexem(LexemType::TEXT, "picПроизводство"), colon,
+    Lexem(LexemType::TEXT, " Австралия / Avalon Films, Michael Jordache Enterprises, Summer City"), newline,
+    Lexem(LexemType::TEXT, "Жанр"), colon,
+    Lexem(LexemType::TEXT, " триллер, драма, приключения"), newline, newline,
+    Lexem(LexemType::TEXT, "Режиссер"), colon,
+    Lexem(LexemType::TEXT, " Кристофер Фрайзер"), newline,
+    Lexem(LexemType::TEXT, "Актеры"), colon,
+    Lexem(LexemType::TEXT, " Джон Джэррэт, Филлип Авалон, Стив Бисли, Мэл Гибсон, Джеймс Эллиотт, Дебора Формен, Эбигейл, Уорд «Полли» Остин, Джудит Вудрофф, Карл Рорк"), newline, newline,
+    Lexem(LexemType::TEXT, "Описание"), colon, newline,
+    Lexem(LexemType::TEXT, "Сколоп и его трое друзей отправляются на берег океана, подыскивая место, где есть «крутая» волна для катания на серфингах. Чистая вода, пляж, девочки, солнце и море удовольствий, казалось бы, ничто не может испортить настроение."), newline,
+    Lexem(LexemType::TEXT, "Но Бу, один из друзей, соблазняет юную дочь владельца кемпинга. С этого момента обыкновенный летний отдых превращается для друзей в настоящий кровавый кошмар."), newline, newline,
+    Lexem(LexemType::TEXT, "pic 3.9/10725"), newline, newline,
+    Lexem(LexemType::TEXT, "Продолжительность"), colon,
+    Lexem(LexemType::TEXT, " 01"), colon,
+    Lexem(LexemType::TEXT, "21"), colon,
+    Lexem(LexemType::TEXT, "39"), newline,
+    Lexem(LexemType::TEXT, "Качество видео"), colon,
+    Lexem(LexemType::TEXT, " DVDRip"), newline,
+    Lexem(LexemType::TEXT, "Перевод"), colon,
+    Lexem(LexemType::TEXT, " Авторский (Юрий Сербин)"), newline,
+    Lexem(LexemType::TEXT, "Субтитры"), colon,
+    Lexem(LexemType::TEXT, " Отсутствуют"), newline, newline,
+    Lexem(LexemType::TEXT, "Видео"), colon,
+    Lexem(LexemType::TEXT, " AVC/H.264, 720x536, ~2288 Kbps"), newline,
+    Lexem(LexemType::TEXT, "Аудио #1"), colon,
+    Lexem(LexemType::TEXT, " AC3, 2 ch, 256 Kbps - Русский"), newline,
+    Lexem(LexemType::TEXT, "Аудио #2"), colon,
+    Lexem(LexemType::TEXT, " AC3, 2 ch, 256 Kbps - Английский")
+  });
+
+  Lexem got_lexem, expected_lexem;
+
+  while ((got_lexem = got_stream.Read()).type != LexemType::EMPTY
+         && (expected_lexem = expected_stream.Read()).type != LexemType::EMPTY) {
+    EXPECT_EQ(kLexemTypeNaming.find(got_lexem.type)->second,
+              kLexemTypeNaming.find(expected_lexem.type)->second);
+    ASSERT_EQ(got_lexem.value, expected_lexem.value);
+  }
+}
+

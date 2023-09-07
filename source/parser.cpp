@@ -84,6 +84,7 @@ Info Parser::parse(std::istream& in) {
 
   for (auto token = token_stream.Read(); token.type != TokenType::EMPTY;
        token = token_stream.Read()) {
+
     switch (state) {
       case 0:
         if (token.type != TokenType::KEY) continue;
