@@ -13,7 +13,7 @@ using namespace nnmcpp::parsing;
 void Title::parse(const std::string& target) {
   std::regex pattern(R"((.*) / (.*) \(((?:19|20)\d{2})\))");
   std::smatch match;
-  std::regex_match(target, match, pattern);
+  std::regex_search(target, match, pattern);
 
   if (match.empty()) {
     throw std::runtime_error("Wrong title format");
@@ -29,7 +29,7 @@ void Title::parse(const std::string& target) {
 void Video::parse(const std::string& target) {
   std::regex pattern(R"(\s*.*, (?:\d+x\d+@)*(\d+)x(\d+), ~\d+ Kbps)");
   std::smatch match;
-  std::regex_match(target, match, pattern);
+  std::regex_search(target, match, pattern);
 
   if (match.empty()) {
     throw std::runtime_error("Wrong resolution format");
