@@ -21,7 +21,7 @@ namespace nnmcpp {
         "", /* TODO: extra content file */
         info.audio.raw,
         info.subtitles.raw,
-        info.actor.raw,
+        info.actors.raw,
         "" /* empty field */
     };
     return boost::algorithm::join(fields, " \\ ");

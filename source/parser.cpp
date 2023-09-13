@@ -1,7 +1,9 @@
 #include <iostream>
 #include <istream>
 #include <nnmcpp/parser.hpp>
+#include <sstream>
 #include <stdexcept>
+#include <string>
 #include <utility>
 #include <regex>
 
@@ -39,6 +41,45 @@ void Video::parse(const std::string& target) {
 
   width = match.str(1);
   height = match.str(2);
+}
+
+void Actors::parse(const std::string& target) {
+  std::regex pattern(R"((^.*?)( и др\.)?$)");
+  std::smatch match;
+  std::regex_search(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong actors format");
+  }
+
+
+  raw = target;
+
+  std::stringstream stream_target(match.str(1));
+  std::string actor;
+
+  while (stream_target.good()) {
+    std::getline(stream_target, actor, ',');
+    actors.push_back(actor);
+  }
+}
+
+void Subtitles::parse(const std::string& target) {
+  raw = target;
+}
+
+void Duration::parse(const std::string& target) {
+  std::regex pattern(R"(\s*(\d{2}):(\d{2}):(\d{2}))");
+  std::smatch match;
+  std::regex_search(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong time format");
+  }
+
+  raw = target;
+
+  minutes = std::stoi(match.str(1)) * 60 + std::stoi(match.str(2));
 }
 
 void StringField::parse(const std::string& target) {
