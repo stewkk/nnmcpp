@@ -70,12 +70,10 @@ namespace nnmcpp::parsing {
   struct Info {
     Title title;
     Video video;
-
     Duration duration;
-
     Actors actors;
+    Subtitles subtitles;
 
-    StringField subtitles;
     StringField audio;
 
     StringField translation;

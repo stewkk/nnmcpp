@@ -33,6 +33,9 @@ TEST(ParserTest, SimpleParse) {
   expected_info.video.height = "576";
 
   expected_info.subtitles.raw = " английский, французский, испанский, немецкий";
+  expected_info.subtitles.langs = {
+    "en", "fr", "es", "de"
+  };
 
   expected_info.translation.raw = "";
   expected_info.director.raw = " Майкл Хоффман";
@@ -105,6 +108,24 @@ TEST(ParserTest, SimpleParse) {
   }
 
   ASSERT_EQ(c, 15);
+
+  c = 0;
+
+  auto expected_sub_elem = expected_info.subtitles.langs.begin();
+  auto expected_sub_end = expected_info.subtitles.langs.end();
+
+  auto got_sub_elem = got_info.subtitles.langs.begin();
+  auto got_sub_end = got_info.subtitles.langs.end();
+
+  while (expected_sub_elem != expected_sub_end && got_sub_elem != got_sub_end) {
+    ASSERT_EQ(*expected_sub_elem, *got_sub_elem);
+
+    c++;
+    got_sub_elem++;
+    expected_sub_elem++;
+  }
+
+  ASSERT_EQ(c, 4);
 
   ASSERT_EQ(expected_info.duration.raw, got_info.duration.raw);
   ASSERT_EQ(expected_info.duration.minutes, got_info.duration.minutes);

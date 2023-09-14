@@ -64,8 +64,40 @@ void Actors::parse(const std::string& target) {
   }
 }
 
+static std::string strip(const std::string& str) {
+  size_t fs = 0;
+  int ls = 0;
+
+  for (auto s = str.begin(); s != str.end(); s++) {
+    if (*s != ' ') {
+      fs = std::distance(str.begin(), s);
+      break;
+    }
+  }
+
+  for (auto s = str.rbegin(); s != str.rend(); s++) {
+    if (*s != ' ') {
+      ls = str.size() - std::distance(str.rbegin(), s) - fs;
+      break;
+    }
+  }
+
+  if (ls < 0)
+    return "";
+
+  return str.substr(fs, ls);
+}
+
 void Subtitles::parse(const std::string& target) {
   raw = target;
+
+  std::stringstream stream_target(target);
+  std::string lang;
+
+  while (stream_target.good()) {
+    std::getline(stream_target, lang, ',');
+    langs.push_back(kNormalizedLangs.find(strip(lang))->second);
+  }
 }
 
 void Duration::parse(const std::string& target) {
