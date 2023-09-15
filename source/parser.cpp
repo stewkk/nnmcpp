@@ -13,7 +13,7 @@
 using namespace nnmcpp::parsing;
 
 void Title::parse(const std::string& target) {
-  std::regex pattern(R"((.*) / (.*) \(((?:19|20)\d{2})\))");
+  std::regex pattern(R"((.*)(/(.*))?\(((?:18|19|20)\d{2})\).*)");
   std::smatch match;
   std::regex_search(target, match, pattern);
 
@@ -24,8 +24,8 @@ void Title::parse(const std::string& target) {
   raw = target;
 
   ru_title = match.str(1);
-  en_title = match.str(2);
-  year = match.str(3);
+  en_title = match.str(4);
+  year = match.str(5);
 }
 
 void Video::parse(const std::string& target) {
@@ -96,9 +96,12 @@ void Subtitles::parse(const std::string& target) {
 
   while (stream_target.good()) {
     std::getline(stream_target, lang, ',');
-    langs.push_back(kNormalizedLangs.find(strip(lang))->second);
+    if (kNormalizedLangs.find(strip(lang)) != kNormalizedLangs.end()) {
+      langs.push_back(kNormalizedLangs.find(strip(lang))->second);
+    }
   }
 }
+
 
 void Duration::parse(const std::string& target) {
   std::regex pattern(R"(\s*(\d{2}):(\d{2}):(\d{2}))");
