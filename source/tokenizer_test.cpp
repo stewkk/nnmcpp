@@ -39,7 +39,7 @@ TEST(TokenizerTest, SimpleTokenize) {
        Token(TokenType::TEXT, ""),
        Token(TokenType::KEY, "director"),
        Token(TokenType::TEXT, " Майкл Хоффман"),
-       Token(TokenType::KEY, "actor"),
+       Token(TokenType::KEY, "actors"),
        Token(TokenType::TEXT,
              " Софи Марсо, Кевин Клайн, Мишель Пфайффер, Стэнли Туччи, Руперт Эверетт, Калиста "
              "Флокхарт, Доминик Уэст, Кристиан Бэйл, Анна Фрил, Дэвид Стрэтэйрн, Роджер Рис, Сэм"
@@ -103,7 +103,7 @@ TEST(TokenizerTest, OtherSimpleTokenize) {
       Token(TokenType::TEXT, ""),
       Token(TokenType::KEY, "director"),
       Token(TokenType::TEXT, " Зак Снайдер"),
-      Token(TokenType::KEY, "actor"),
+      Token(TokenType::KEY, "actors"),
       Token(TokenType::TEXT,
             " Генри Кавилл, Эми Адамс, Майкл Шеннон (II), Кевин Костнер, Дайан Лэйн, Лоуренс "
             "Фишборн, Антье Трауэ, Айелет Зурер, Расселл Кроу, Гарри Дж. Ленникс"),

@@ -1,7 +1,9 @@
 #include <iostream>
 #include <istream>
 #include <nnmcpp/parser.hpp>
+#include <sstream>
 #include <stdexcept>
+#include <string>
 #include <utility>
 #include <regex>
 
@@ -11,9 +13,9 @@
 using namespace nnmcpp::parsing;
 
 void Title::parse(const std::string& target) {
-  std::regex pattern(R"((.*) / (.*) \(((?:19|20)\d{2})\))");
+  std::regex pattern(R"((.*)(/(.*))?\(((?:18|19|20)\d{2})\).*)");
   std::smatch match;
-  std::regex_match(target, match, pattern);
+  std::regex_search(target, match, pattern);
 
   if (match.empty()) {
     throw std::runtime_error("Wrong title format");
@@ -22,14 +24,14 @@ void Title::parse(const std::string& target) {
   raw = target;
 
   ru_title = match.str(1);
-  en_title = match.str(2);
-  year = match.str(3);
+  en_title = match.str(4);
+  year = match.str(5);
 }
 
 void Video::parse(const std::string& target) {
   std::regex pattern(R"(\s*.*, (?:\d+x\d+@)*(\d+)x(\d+), ~\d+ Kbps)");
   std::smatch match;
-  std::regex_match(target, match, pattern);
+  std::regex_search(target, match, pattern);
 
   if (match.empty()) {
     throw std::runtime_error("Wrong resolution format");
@@ -39,6 +41,80 @@ void Video::parse(const std::string& target) {
 
   width = match.str(1);
   height = match.str(2);
+}
+
+void Actors::parse(const std::string& target) {
+  std::regex pattern(R"((^.*?)( и др\.)?$)");
+  std::smatch match;
+  std::regex_search(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong actors format");
+  }
+
+
+  raw = target;
+
+  std::stringstream stream_target(match.str(1));
+  std::string actor;
+
+  while (stream_target.good()) {
+    std::getline(stream_target, actor, ',');
+    actors.push_back(actor);
+  }
+}
+
+static std::string strip(const std::string& str) {
+  size_t fs = 0;
+  int ls = 0;
+
+  for (auto s = str.begin(); s != str.end(); s++) {
+    if (*s != ' ') {
+      fs = std::distance(str.begin(), s);
+      break;
+    }
+  }
+
+  for (auto s = str.rbegin(); s != str.rend(); s++) {
+    if (*s != ' ') {
+      ls = str.size() - std::distance(str.rbegin(), s) - fs;
+      break;
+    }
+  }
+
+  if (ls < 0)
+    return "";
+
+  return str.substr(fs, ls);
+}
+
+void Subtitles::parse(const std::string& target) {
+  raw = target;
+
+  std::stringstream stream_target(target);
+  std::string lang;
+
+  while (stream_target.good()) {
+    std::getline(stream_target, lang, ',');
+    if (kNormalizedLangs.find(strip(lang)) != kNormalizedLangs.end()) {
+      langs.push_back(kNormalizedLangs.find(strip(lang))->second);
+    }
+  }
+}
+
+
+void Duration::parse(const std::string& target) {
+  std::regex pattern(R"(\s*(\d{2}):(\d{2}):(\d{2}))");
+  std::smatch match;
+  std::regex_search(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong time format");
+  }
+
+  raw = target;
+
+  minutes = std::stoi(match.str(1)) * 60 + std::stoi(match.str(2));
 }
 
 void StringField::parse(const std::string& target) {
@@ -84,6 +160,7 @@ Info Parser::parse(std::istream& in) {
 
   for (auto token = token_stream.Read(); token.type != TokenType::EMPTY;
        token = token_stream.Read()) {
+
     switch (state) {
       case 0:
         if (token.type != TokenType::KEY) continue;

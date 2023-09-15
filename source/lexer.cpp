@@ -33,9 +33,14 @@ Lexem Lexer::parseLexem(std::istream& in) {
         in.get();
         return Lexem((c == '\n' ? LexemType::NEWLINE : LexemType::COLON), (c == '\n' ? "\n" : ":"));
 
+      case '\r':
+        in.get();
+        break;
+
       default:
         in.get();
         s.push_back(c);
+        break;
     }
   }
 

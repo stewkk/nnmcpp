@@ -32,6 +32,12 @@ namespace nnmcpp::parsing {
     std::string height;
     std::string width;
   };
+
+  struct Actors : public Field {
+    void parse(const std::string& target) override;
+
+    std::vector<std::string> actors;
+  };
   
   struct Subtitles : public Field {
     void parse(const std::string& target) override;
@@ -51,6 +57,12 @@ namespace nnmcpp::parsing {
     std::vector<AudioUnit> units;
   };
 
+  struct Duration : public Field {
+    void parse(const std::string& target) override;
+    
+    size_t minutes;
+  };
+
   struct StringField : public Field {
     void parse(const std::string& target) override;
   };
@@ -58,7 +70,10 @@ namespace nnmcpp::parsing {
   struct Info {
     Title title;
     Video video;
-    StringField subtitles;
+    Duration duration;
+    Actors actors;
+    Subtitles subtitles;
+
     StringField audio;
 
     StringField translation;
@@ -68,8 +83,6 @@ namespace nnmcpp::parsing {
     StringField production;
     StringField quality;
     StringField genre;
-    StringField actor;
-    StringField duration;
 
     const std::string& get(const std::string& k);
     void set(const std::string& k, const std::string& v);
@@ -78,7 +91,7 @@ namespace nnmcpp::parsing {
         = {LABELED_PAIR(title),    LABELED_PAIR(translation), LABELED_PAIR(quality),
            LABELED_PAIR(director), LABELED_PAIR(country),     LABELED_PAIR(production),
            LABELED_PAIR(video),    LABELED_PAIR(genre),       LABELED_PAIR(audio),
-           LABELED_PAIR(actor),    LABELED_PAIR(duration),    LABELED_PAIR(subtitles)};
+           LABELED_PAIR(actors),    LABELED_PAIR(duration),    LABELED_PAIR(subtitles)};
 
     void parse_title(const std::string& title);
     void parse_video(const std::string& video);
