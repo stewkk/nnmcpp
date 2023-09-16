@@ -1,6 +1,7 @@
 #include "nnmcpp/serializer.hpp"
 
 #include <boost/algorithm/string/join.hpp>
+#include <boost/range/adaptor/transformed.hpp>
 #include <fmt/format.h>
 
 namespace nnmcpp {
@@ -18,7 +19,7 @@ namespace nnmcpp {
         info.quality.raw,
         fmt::format("{}min", info.duration.minutes),
         info.genre.raw,
-        info.audio.raw,
+        boost::algorithm::join(info.audio.units | boost::adaptors::transformed([](const auto& u){return u.lang;}), ","),
         boost::algorithm::join(info.subtitles.langs, ","),
         info.actors.raw,
     };

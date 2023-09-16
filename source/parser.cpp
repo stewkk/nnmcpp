@@ -1,4 +1,3 @@
-#include <iostream>
 #include <istream>
 #include <nnmcpp/parser.hpp>
 #include <sstream>
@@ -14,6 +13,30 @@
 #include "langs.hpp"
 
 using namespace nnmcpp::parsing;
+
+static std::string strip(const std::string& str) {
+  size_t fs = 0;
+  int ls = 0;
+
+  for (auto s = str.begin(); s != str.end(); s++) {
+    if (*s != ' ') {
+      fs = std::distance(str.begin(), s);
+      break;
+    }
+  }
+
+  for (auto s = str.rbegin(); s != str.rend(); s++) {
+    if (*s != ' ') {
+      ls = str.size() - std::distance(str.rbegin(), s) - fs;
+      break;
+    }
+  }
+
+  if (ls < 0)
+    return "";
+
+  return str.substr(fs, ls);
+}
 
 void Title::parse(const std::string& target) {
   std::regex pattern(R"((.*?)( ?\/ ?(.*))? ?\(((?:18|19|20)\d{2})\).*)");
@@ -64,30 +87,6 @@ void Actors::parse(const std::string& target) {
     std::getline(stream_target, actor, ',');
     actors.push_back(actor);
   }
-}
-
-static std::string strip(const std::string& str) {
-  size_t fs = 0;
-  int ls = 0;
-
-  for (auto s = str.begin(); s != str.end(); s++) {
-    if (*s != ' ') {
-      fs = std::distance(str.begin(), s);
-      break;
-    }
-  }
-
-  for (auto s = str.rbegin(); s != str.rend(); s++) {
-    if (*s != ' ') {
-      ls = str.size() - std::distance(str.rbegin(), s) - fs;
-      break;
-    }
-  }
-
-  if (ls < 0)
-    return "";
-
-  return str.substr(fs, ls);
 }
 
 void Subtitles::parse(const std::string& target) {
@@ -147,10 +146,11 @@ void Production::parse(const std::string& target) {
   for (auto& el : fields) {
     el = strip(el);
   }
+  if (!fields.empty()) {
+    country = fields[0];
+  }
   if (fields.size() > 1) {
     producer_company = fields[1];
-  } else if (fields.size() == 1) {
-    country = fields[0];
   }
 }
 
