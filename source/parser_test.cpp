@@ -38,13 +38,41 @@ TEST(ParserTest, SimpleParse) {
   };
 
   expected_info.translation.raw = "";
-  expected_info.director.raw = " Майкл Хоффман";
+  expected_info.director.raw = "Майкл Хоффман";
   expected_info.country.raw = "";
   expected_info.production.raw
       = " Италия, Великобритания, США (Fox Searchlight Pictures, Regency Enterprises, Taurus Film)";
-  expected_info.quality.raw = " DVDRemux";
-  expected_info.genre.raw = " комедия, фэнтези";
-  expected_info.audio.raw = " AC3, 2 ch, 192 Kbps, русский";
+  expected_info.quality.raw = "DVDRemux";
+  expected_info.genre.raw = "комедия, фэнтези";
+  expected_info.audio.raw = "";
+  expected_info.audio.units = {};
+
+  Audio::AudioUnit au;
+  au.raw = " AC3, 6 ch, 384 Kbps, английский";
+  au.lang = "en";
+
+  expected_info.audio.units.push_back(au);
+
+  au.raw = " AC3, 6 ch, 384 Kbps, французский";
+  au.lang = "fr";
+
+  expected_info.audio.units.push_back(au);
+
+  au.raw = " AC3, 6 ch, 384 Kbps, английский";
+  au.lang = "en";
+
+  expected_info.audio.units.push_back(au);
+
+  au.raw = " AC3, 6 ch, 384 Kbps, испанский";
+  au.lang = "es";
+
+  expected_info.audio.units.push_back(au);
+
+  au.raw = " AC3, 2 ch, 192 Kbps, русский";
+  au.lang = "ru";
+
+  expected_info.audio.units.push_back(au);
+
   expected_info.actors.raw = " Софи Марсо, Кевин Клайн, Мишель Пфайффер, Стэнли Туччи, Руперт Эверетт, Калиста "
         "Флокхарт, Доминик Уэст, Кристиан Бэйл, Анна Фрил, Дэвид Стрэтэйрн, Роджер Рис, Сэм"
         " Рокуэлл, Грегори Джбара, Билл Ирвин, Макс Райт и др.";
@@ -126,6 +154,25 @@ TEST(ParserTest, SimpleParse) {
   }
 
   ASSERT_EQ(c, 4);
+
+  c = 0;
+
+  auto expected_audio_elem = expected_info.audio.units.begin();
+  auto expected_audio_end = expected_info.audio.units.end();
+  
+  auto got_audio_elem = got_info.audio.units.begin();
+  auto got_audio_end = got_info.audio.units.end();
+
+  while (expected_audio_elem != expected_audio_end && got_audio_elem != got_audio_end) {
+    ASSERT_EQ(expected_audio_elem->raw, got_audio_elem->raw);
+    ASSERT_EQ(expected_audio_elem->lang, got_audio_elem->lang);
+
+    c++;
+    got_audio_elem++;
+    expected_audio_elem++;
+  }
+
+  ASSERT_EQ(c, 5);
 
   ASSERT_EQ(expected_info.duration.raw, got_info.duration.raw);
   ASSERT_EQ(expected_info.duration.minutes, got_info.duration.minutes);

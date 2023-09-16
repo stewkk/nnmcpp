@@ -16,7 +16,7 @@
 using namespace nnmcpp::parsing;
 
 void Title::parse(const std::string& target) {
-  std::regex pattern(R"((.*?)(/(.*))?\(((?:18|19|20)\d{2})\).*)");
+  std::regex pattern(R"((.*?)( / (.*))? \(((?:18|19|20)\d{2})\).*)");
   std::smatch match;
   std::regex_search(target, match, pattern);
 
@@ -36,8 +36,7 @@ void Video::parse(const std::string& target) {
   std::smatch match;
   std::regex_search(target, match, pattern);
 
-  if (match.empty()) {
-    throw std::runtime_error("Wrong resolution format");
+  if (match.empty()) { throw std::runtime_error("Wrong resolution format");
   }
 
   raw = target;
@@ -105,6 +104,24 @@ void Subtitles::parse(const std::string& target) {
   }
 }
 
+void Audio::parse(const std::string& target) {
+  AudioUnit au;
+  au.parse(target);
+  units.push_back(au);
+}
+
+void Audio::AudioUnit::parse(const std::string& target) {
+  std::regex pattern(R"(^\s*.*?, \d+ ch, \d+ Kbps(?: -|,) (.*)$)");
+  std::smatch match;
+  std::regex_search(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong audio format");
+  }
+
+  raw = target;
+  lang = kNormalizedLangs.find(match.str(1))->second;
+}
 
 void Duration::parse(const std::string& target) {
   std::regex pattern(R"(\s*(\d{2}):(\d{2}):(\d{2}))");
