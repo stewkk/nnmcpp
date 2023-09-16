@@ -120,7 +120,9 @@ void Audio::AudioUnit::parse(const std::string& target) {
   }
 
   raw = target;
-  lang = kNormalizedLangs.find(match.str(1))->second;
+  if (auto it = kNormalizedLangs.find(match.str(1)); it != kNormalizedLangs.end()) {
+    lang = it->second;
+  }
 }
 
 void Duration::parse(const std::string& target) {
