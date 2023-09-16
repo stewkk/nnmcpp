@@ -89,6 +89,10 @@ void Actors::parse(const std::string& target) {
   }
 }
 
+std::string Normalized(const std::string& s) {
+  return strip(s);
+}
+
 void Subtitles::parse(const std::string& target) {
   raw = target;
 
@@ -97,8 +101,8 @@ void Subtitles::parse(const std::string& target) {
 
   while (stream_target.good()) {
     std::getline(stream_target, lang, ',');
-    if (kNormalizedLangs.find(strip(lang)) != kNormalizedLangs.end()) {
-      langs.push_back(kNormalizedLangs.find(strip(lang))->second);
+    if (auto it = kNormalizedLangs.find(Normalized(lang)); it != kNormalizedLangs.end()) {
+      langs.push_back(it->second);
     }
   }
 }
@@ -119,7 +123,7 @@ void Audio::AudioUnit::parse(const std::string& target) {
   }
 
   raw = target;
-  if (auto it = kNormalizedLangs.find(match.str(1)); it != kNormalizedLangs.end()) {
+  if (auto it = kNormalizedLangs.find(Normalized(match.str(1))); it != kNormalizedLangs.end()) {
     lang = it->second;
   }
 }
