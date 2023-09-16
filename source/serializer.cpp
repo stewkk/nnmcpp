@@ -1,26 +1,29 @@
 #include "nnmcpp/serializer.hpp"
 
 #include <boost/algorithm/string/join.hpp>
+#include <boost/range/adaptor/transformed.hpp>
 #include <fmt/format.h>
 
 namespace nnmcpp {
 
   std::string Serialize(const Info& info) {
     std::vector<std::string> fields = {
-	    boost::algorithm::join(std::vector<std::string>{info.title.ru_title, info.title.en_title}, " / "),
-        info.translation.raw,
+        info.title.ru_title,
+        info.title.en_title,
         info.title.year,
-        boost::algorithm::join(
-            std::vector<std::string>{info.director.raw, info.country.raw, info.production.raw}, " / "),
+        info.translation.raw,
+        info.director.raw,
+        info.production.country.value_or(""),
+        info.production.producer_company.value_or(""),
         fmt::format("{}x{}", info.video.width, info.video.height),
         info.quality.raw,
         fmt::format("{}min", info.duration.minutes),
         info.genre.raw,
-        info.audio.raw,
-        info.subtitles.raw,
+        boost::algorithm::join(info.audio.units | boost::adaptors::transformed([](const auto& u){return u.lang;}), ","),
+        boost::algorithm::join(info.subtitles.langs, ","),
         info.actors.raw,
     };
-    return boost::algorithm::join(fields, " \\ ");
+    return boost::algorithm::join(fields, "\\");
   }
 
 }  // namespace nnmcpp

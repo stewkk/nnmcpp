@@ -1,4 +1,3 @@
-#include <iostream>
 #include <istream>
 #include <nnmcpp/parser.hpp>
 #include <sstream>
@@ -7,13 +6,40 @@
 #include <utility>
 #include <regex>
 
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/split.hpp>
+
 #include "tokenizer.hpp"
 #include "langs.hpp"
 
 using namespace nnmcpp::parsing;
 
+static std::string strip(const std::string& str) {
+  size_t fs = 0;
+  int ls = 0;
+
+  for (auto s = str.begin(); s != str.end(); s++) {
+    if (*s != ' ') {
+      fs = std::distance(str.begin(), s);
+      break;
+    }
+  }
+
+  for (auto s = str.rbegin(); s != str.rend(); s++) {
+    if (*s != ' ') {
+      ls = str.size() - std::distance(str.rbegin(), s) - fs;
+      break;
+    }
+  }
+
+  if (ls < 0)
+    return "";
+
+  return str.substr(fs, ls);
+}
+
 void Title::parse(const std::string& target) {
-  std::regex pattern(R"((.*)(/(.*))?\(((?:18|19|20)\d{2})\).*)");
+  std::regex pattern(R"((.*?)( ?\/ ?(.*))? ?\(((?:18|19|20)\d{2})\).*)");
   std::smatch match;
   std::regex_search(target, match, pattern);
 
@@ -24,8 +50,8 @@ void Title::parse(const std::string& target) {
   raw = target;
 
   ru_title = match.str(1);
-  en_title = match.str(4);
-  year = match.str(5);
+  en_title = match.str(3);
+  year = match.str(4);
 }
 
 void Video::parse(const std::string& target) {
@@ -33,8 +59,7 @@ void Video::parse(const std::string& target) {
   std::smatch match;
   std::regex_search(target, match, pattern);
 
-  if (match.empty()) {
-    throw std::runtime_error("Wrong resolution format");
+  if (match.empty()) { throw std::runtime_error("Wrong resolution format");
   }
 
   raw = target;
@@ -64,28 +89,8 @@ void Actors::parse(const std::string& target) {
   }
 }
 
-static std::string strip(const std::string& str) {
-  size_t fs = 0;
-  int ls = 0;
-
-  for (auto s = str.begin(); s != str.end(); s++) {
-    if (*s != ' ') {
-      fs = std::distance(str.begin(), s);
-      break;
-    }
-  }
-
-  for (auto s = str.rbegin(); s != str.rend(); s++) {
-    if (*s != ' ') {
-      ls = str.size() - std::distance(str.rbegin(), s) - fs;
-      break;
-    }
-  }
-
-  if (ls < 0)
-    return "";
-
-  return str.substr(fs, ls);
+std::string Normalized(const std::string& s) {
+  return strip(s);
 }
 
 void Subtitles::parse(const std::string& target) {
@@ -96,12 +101,32 @@ void Subtitles::parse(const std::string& target) {
 
   while (stream_target.good()) {
     std::getline(stream_target, lang, ',');
-    if (kNormalizedLangs.find(strip(lang)) != kNormalizedLangs.end()) {
-      langs.push_back(kNormalizedLangs.find(strip(lang))->second);
+    if (auto it = kNormalizedLangs.find(Normalized(lang)); it != kNormalizedLangs.end()) {
+      langs.push_back(it->second);
     }
   }
 }
 
+void Audio::parse(const std::string& target) {
+  AudioUnit au;
+  au.parse(target);
+  units.push_back(au);
+}
+
+void Audio::AudioUnit::parse(const std::string& target) {
+  std::regex pattern(R"(^\s*.*?, \d+ ch, \d+ Kbps(?: -|,) (.*)$)");
+  std::smatch match;
+  std::regex_search(target, match, pattern);
+
+  if (match.empty()) {
+    throw std::runtime_error("Wrong audio format");
+  }
+
+  raw = target;
+  if (auto it = kNormalizedLangs.find(Normalized(match.str(1))); it != kNormalizedLangs.end()) {
+    lang = it->second;
+  }
+}
 
 void Duration::parse(const std::string& target) {
   std::regex pattern(R"(\s*(\d{2}):(\d{2}):(\d{2}))");
@@ -117,8 +142,24 @@ void Duration::parse(const std::string& target) {
   minutes = std::stoi(match.str(1)) * 60 + std::stoi(match.str(2));
 }
 
-void StringField::parse(const std::string& target) {
+void Production::parse(const std::string& target) {
   raw = target;
+
+  std::vector<std::string> fields;
+  boost::algorithm::split(fields, target, boost::algorithm::is_any_of("/"));
+  for (auto& el : fields) {
+    el = strip(el);
+  }
+  if (!fields.empty()) {
+    country = fields[0];
+  }
+  if (fields.size() > 1) {
+    producer_company = fields[1];
+  }
+}
+
+void StringField::parse(const std::string& target) {
+  raw = strip(target);
 }
 
 const std::string& Info::get(const std::string& k) {
