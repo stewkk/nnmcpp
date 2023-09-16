@@ -16,7 +16,7 @@
 using namespace nnmcpp::parsing;
 
 void Title::parse(const std::string& target) {
-  std::regex pattern(R"((.*?)( / (.*))? \(((?:18|19|20)\d{2})\).*)");
+  std::regex pattern(R"((.*?)( ?\/ ?(.*))? ?\(((?:18|19|20)\d{2})\).*)");
   std::smatch match;
   std::regex_search(target, match, pattern);
 
