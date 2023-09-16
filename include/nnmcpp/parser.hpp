@@ -63,6 +63,13 @@ namespace nnmcpp::parsing {
     size_t minutes;
   };
 
+  struct Production : public Field {
+      void parse(const std::string& target) override;
+
+      std::optional<std::string> country;
+      std::optional<std::string> producer_company;
+  };
+
   struct StringField : public Field {
     void parse(const std::string& target) override;
   };
@@ -80,7 +87,7 @@ namespace nnmcpp::parsing {
 
     StringField director;
     StringField country;
-    StringField production;
+    Production production;
     StringField quality;
     StringField genre;
 

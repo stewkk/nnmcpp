@@ -7,13 +7,16 @@
 #include <utility>
 #include <regex>
 
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/split.hpp>
+
 #include "tokenizer.hpp"
 #include "langs.hpp"
 
 using namespace nnmcpp::parsing;
 
 void Title::parse(const std::string& target) {
-  std::regex pattern(R"((.*)(/(.*))?\(((?:18|19|20)\d{2})\).*)");
+  std::regex pattern(R"((.*?)(/(.*))?\(((?:18|19|20)\d{2})\).*)");
   std::smatch match;
   std::regex_search(target, match, pattern);
 
@@ -24,8 +27,8 @@ void Title::parse(const std::string& target) {
   raw = target;
 
   ru_title = match.str(1);
-  en_title = match.str(4);
-  year = match.str(5);
+  en_title = match.str(3);
+  year = match.str(4);
 }
 
 void Video::parse(const std::string& target) {
@@ -117,8 +120,23 @@ void Duration::parse(const std::string& target) {
   minutes = std::stoi(match.str(1)) * 60 + std::stoi(match.str(2));
 }
 
-void StringField::parse(const std::string& target) {
+void Production::parse(const std::string& target) {
   raw = target;
+
+  std::vector<std::string> fields;
+  boost::algorithm::split(fields, target, boost::algorithm::is_any_of("/"));
+  for (auto& el : fields) {
+    el = strip(el);
+  }
+  if (fields.size() > 1) {
+    producer_company = fields[1];
+  } else if (fields.size() == 1) {
+    country = fields[0];
+  }
+}
+
+void StringField::parse(const std::string& target) {
+  raw = strip(target);
 }
 
 const std::string& Info::get(const std::string& k) {
